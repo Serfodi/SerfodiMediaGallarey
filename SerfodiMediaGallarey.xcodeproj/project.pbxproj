@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B00250172C8AF9E000084A0E /* ErrorDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00250162C8AF9E000084A0E /* ErrorDescription.swift */; };
+		B00250192C8AFF0500084A0E /* NetworkDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00250182C8AFF0500084A0E /* NetworkDataFetcher.swift */; };
+		B002501C2C8AFF7D00084A0E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B002501B2C8AFF7D00084A0E /* Photo.swift */; };
+		B002501F2C8B00D700084A0E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B002501E2C8B00D700084A0E /* User.swift */; };
+		B00250212C8B07D500084A0E /* ResponseWrapped.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00250202C8B07D500084A0E /* ResponseWrapped.swift */; };
+		B00250232C8B106900084A0E /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00250222C8B106900084A0E /* NetworkServiceTests.swift */; };
+		B00250262C8B111B00084A0E /* NetworkDataFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00250252C8B111B00084A0E /* NetworkDataFetcherTests.swift */; };
+		B002502B2C8B23C500084A0E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B002502A2C8B23C500084A0E /* Environment.swift */; };
 		B03E5C282C8AE98C00A8965B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C272C8AE98C00A8965B /* AppDelegate.swift */; };
 		B03E5C2A2C8AE98C00A8965B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C292C8AE98C00A8965B /* SceneDelegate.swift */; };
 		B03E5C2C2C8AE98C00A8965B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C2B2C8AE98C00A8965B /* ViewController.swift */; };
@@ -15,6 +23,9 @@
 		B03E5C3F2C8AE99400A8965B /* SerfodiMediaGallareyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C3E2C8AE99400A8965B /* SerfodiMediaGallareyTests.swift */; };
 		B03E5C492C8AE99400A8965B /* SerfodiMediaGallareyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C482C8AE99400A8965B /* SerfodiMediaGallareyUITests.swift */; };
 		B03E5C4B2C8AE99400A8965B /* SerfodiMediaGallareyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C4A2C8AE99400A8965B /* SerfodiMediaGallareyUITestsLaunchTests.swift */; };
+		B03E5C5A2C8AF0BC00A8965B /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C592C8AF0BC00A8965B /* API.swift */; };
+		B03E5C5D2C8AF18C00A8965B /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C5C2C8AF18C00A8965B /* NetworkService.swift */; };
+		B03E5C5F2C8AF21700A8965B /* NetworkingHTTPSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C5E2C8AF21700A8965B /* NetworkingHTTPSError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +46,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B00250162C8AF9E000084A0E /* ErrorDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDescription.swift; sourceTree = "<group>"; };
+		B00250182C8AFF0500084A0E /* NetworkDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetcher.swift; sourceTree = "<group>"; };
+		B002501B2C8AFF7D00084A0E /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Photo.swift; path = SerfodiMediaGallarey/Model/Photo.swift; sourceTree = SOURCE_ROOT; };
+		B002501E2C8B00D700084A0E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B00250202C8B07D500084A0E /* ResponseWrapped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseWrapped.swift; sourceTree = "<group>"; };
+		B00250222C8B106900084A0E /* NetworkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
+		B00250252C8B111B00084A0E /* NetworkDataFetcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetcherTests.swift; sourceTree = "<group>"; };
+		B00250292C8B22D100084A0E /* ConfigAPI.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ConfigAPI.xcconfig; sourceTree = "<group>"; };
+		B002502A2C8B23C500084A0E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Environment.swift; path = SerfodiMediaGallarey/Utils/Environment.swift; sourceTree = SOURCE_ROOT; };
 		B03E5C242C8AE98C00A8965B /* SerfodiMediaGallarey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SerfodiMediaGallarey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B03E5C272C8AE98C00A8965B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B03E5C292C8AE98C00A8965B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +67,9 @@
 		B03E5C442C8AE99400A8965B /* SerfodiMediaGallareyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SerfodiMediaGallareyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B03E5C482C8AE99400A8965B /* SerfodiMediaGallareyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerfodiMediaGallareyUITests.swift; sourceTree = "<group>"; };
 		B03E5C4A2C8AE99400A8965B /* SerfodiMediaGallareyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerfodiMediaGallareyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B03E5C592C8AF0BC00A8965B /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		B03E5C5C2C8AF18C00A8965B /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		B03E5C5E2C8AF21700A8965B /* NetworkingHTTPSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingHTTPSError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +97,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B002501D2C8AFF8800084A0E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B002501B2C8AFF7D00084A0E /* Photo.swift */,
+				B002501E2C8B00D700084A0E /* User.swift */,
+				B00250202C8B07D500084A0E /* ResponseWrapped.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B00250242C8B10F800084A0E /* ServicesTests */ = {
+			isa = PBXGroup;
+			children = (
+				B00250222C8B106900084A0E /* NetworkServiceTests.swift */,
+				B00250252C8B111B00084A0E /* NetworkDataFetcherTests.swift */,
+			);
+			path = ServicesTests;
+			sourceTree = "<group>";
+		};
+		B002502C2C8B23CA00084A0E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B002502A2C8B23C500084A0E /* Environment.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		B03E5C1B2C8AE98C00A8965B = {
 			isa = PBXGroup;
 			children = (
@@ -98,7 +148,11 @@
 			isa = PBXGroup;
 			children = (
 				B03E5C572C8AEED400A8965B /* AppDelegate */,
+				B002501D2C8AFF8800084A0E /* Model */,
+				B03E5C5B2C8AF15D00A8965B /* Services */,
 				B03E5C2B2C8AE98C00A8965B /* ViewController.swift */,
+				B03E5C602C8AF23900A8965B /* Error */,
+				B002502C2C8B23CA00084A0E /* Utils */,
 				B03E5C582C8AEF3B00A8965B /* Other */,
 			);
 			path = SerfodiMediaGallarey;
@@ -108,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				B03E5C3E2C8AE99400A8965B /* SerfodiMediaGallareyTests.swift */,
+				B00250242C8B10F800084A0E /* ServicesTests */,
 			);
 			path = SerfodiMediaGallareyTests;
 			sourceTree = "<group>";
@@ -136,8 +191,28 @@
 				B03E5C302C8AE99300A8965B /* Assets.xcassets */,
 				B03E5C322C8AE99300A8965B /* LaunchScreen.storyboard */,
 				B03E5C352C8AE99300A8965B /* Info.plist */,
+				B00250292C8B22D100084A0E /* ConfigAPI.xcconfig */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		B03E5C5B2C8AF15D00A8965B /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B03E5C592C8AF0BC00A8965B /* API.swift */,
+				B03E5C5C2C8AF18C00A8965B /* NetworkService.swift */,
+				B00250182C8AFF0500084A0E /* NetworkDataFetcher.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B03E5C602C8AF23900A8965B /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				B03E5C5E2C8AF21700A8965B /* NetworkingHTTPSError.swift */,
+				B00250162C8AF9E000084A0E /* ErrorDescription.swift */,
+			);
+			path = Error;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,9 +345,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B03E5C5D2C8AF18C00A8965B /* NetworkService.swift in Sources */,
+				B002502B2C8B23C500084A0E /* Environment.swift in Sources */,
 				B03E5C2C2C8AE98C00A8965B /* ViewController.swift in Sources */,
+				B03E5C5F2C8AF21700A8965B /* NetworkingHTTPSError.swift in Sources */,
+				B002501C2C8AFF7D00084A0E /* Photo.swift in Sources */,
 				B03E5C282C8AE98C00A8965B /* AppDelegate.swift in Sources */,
+				B03E5C5A2C8AF0BC00A8965B /* API.swift in Sources */,
+				B00250192C8AFF0500084A0E /* NetworkDataFetcher.swift in Sources */,
 				B03E5C2A2C8AE98C00A8965B /* SceneDelegate.swift in Sources */,
+				B00250172C8AF9E000084A0E /* ErrorDescription.swift in Sources */,
+				B00250212C8B07D500084A0E /* ResponseWrapped.swift in Sources */,
+				B002501F2C8B00D700084A0E /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +365,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B03E5C3F2C8AE99400A8965B /* SerfodiMediaGallareyTests.swift in Sources */,
+				B00250232C8B106900084A0E /* NetworkServiceTests.swift in Sources */,
+				B00250262C8B111B00084A0E /* NetworkDataFetcherTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +408,7 @@
 /* Begin XCBuildConfiguration section */
 		B03E5C4C2C8AE99400A8965B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B00250292C8B22D100084A0E /* ConfigAPI.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -385,6 +472,7 @@
 		};
 		B03E5C4D2C8AE99400A8965B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B00250292C8B22D100084A0E /* ConfigAPI.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -451,7 +539,6 @@
 				INFOPLIST_FILE = SerfodiMediaGallarey/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -480,7 +567,6 @@
 				INFOPLIST_FILE = SerfodiMediaGallarey/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -506,7 +592,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VJ7AN5PN54;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = serfodi.SerfodiMediaGallareyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -526,7 +612,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VJ7AN5PN54;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = serfodi.SerfodiMediaGallareyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -545,6 +631,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VJ7AN5PN54;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = serfodi.SerfodiMediaGallareyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -563,6 +650,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VJ7AN5PN54;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = serfodi.SerfodiMediaGallareyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
