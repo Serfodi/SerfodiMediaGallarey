@@ -12,7 +12,7 @@ public struct Environment {
         static let accessKey = "Access_Key"
     }
     
-    /// Get the Access_Key from Info.plist
+    /// Get the `Access_Key`  from `Info.plist`
     static let accessKey: String = {
         guard let accessKeyProperty = Bundle.main.object(
             forInfoDictionaryKey: Keys.accessKey
