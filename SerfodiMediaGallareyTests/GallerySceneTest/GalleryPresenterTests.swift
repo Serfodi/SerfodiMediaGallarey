@@ -34,25 +34,47 @@ class GalleryPresenterTests: XCTestCase {
     // MARK: Test doubles
     
     class GalleryDisplayLogicSpy: GalleryDisplayLogic {
-        var displaySomethingCalled = false
+        
+        var items = [MediaCellModel]()
+        var error: String? = nil
         
         func displaySomething(viewModel: Gallery.Something.ViewModel) {
-            displaySomethingCalled = true
+            switch viewModel {
+            case .displayMedia(items: let items):
+                self.items = items
+            case .displayError(let error):
+                self.error = error
+                print(#function, error)
+            }
         }
     }
     
     // MARK: Tests
     
-    func testPresentSomething() {
+    func testPresentSomething() async throws {
         // Given
         let spy = GalleryDisplayLogicSpy()
+        let photo = Photo()
+        
         sut.viewController = spy
-        let response = Gallery.Something.Response.self
+        let response = Gallery.Something.Response.presentMediaItems(media: [photo])
         
         // When
-        //    sut.presentSomething(response: response)
+        sut.presentSomething(response: response)
         
-        // Then
-        XCTAssertTrue(spy.displaySomethingCalled, "presentSomething(response:) should ask the view controller to display the result")
+        try await Task.sleep(nanoseconds: 2)
+        
+        XCTAssertEqual(spy.items.count, 1)
     }
+    
+    
+    
+}
+
+fileprivate extension Photo {
+    
+    init() {
+        self.init(id: "foo", createdAt: "boo", description: nil, user: User(id: "", username: "", profileImage: nil), links: .init(download: ""), urls: .init(regular: ""))
+    }
+    
 }

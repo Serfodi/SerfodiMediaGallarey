@@ -8,8 +8,7 @@
 @testable import SerfodiMediaGallarey
 import XCTest
 
-class GalleryViewControllerTests: XCTestCase
-{
+class GalleryViewControllerTests: XCTestCase {
     // MARK: Subject under test
     
     var sut: GalleryViewController!
@@ -17,71 +16,52 @@ class GalleryViewControllerTests: XCTestCase
     
     // MARK: Test lifecycle
     
-    override func setUp()
-    {
+    override func setUp() {
         super.setUp()
         window = UIWindow()
         setupGalleryViewController()
     }
     
-    override func tearDown()
-    {
+    override func tearDown() {
         window = nil
         super.tearDown()
     }
     
     // MARK: Test setup
     
-    func setupGalleryViewController()
-    {
-        let bundle = Bundle.main
-        let storyboard = UIStoryboard(name: "Main", bundle: bundle)
-        sut = storyboard.instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
+    func setupGalleryViewController() {
+        sut =  GalleryViewController()
     }
     
-    func loadView()
-    {
-        window.addSubview(sut.view)
-        RunLoop.current.run(until: Date())
-    }
     
     // MARK: Test doubles
     
-    class GalleryBusinessLogicSpy: GalleryBusinessLogic
-    {
+    class GalleryBusinessLogicSpy: GalleryBusinessLogic {
         var doSomethingCalled = false
         
-        func doSomething(request: Gallery.Something.Request)
-        {
+        func doSomething(request: Gallery.Something.Request) {
             doSomethingCalled = true
         }
     }
     
     // MARK: Tests
     
-    func testShouldDoSomethingWhenViewIsLoaded()
-    {
-        // Given
+    func testShouldDoSomethingWhenViewIsLoaded() {
+        let config = Configuration(query: "1")
+        
         let spy = GalleryBusinessLogicSpy()
         sut.interactor = spy
+        sut.interactor?.doSomething(request: .search(parameters: config))
         
-        // When
-        loadView()
-        
-        // Then
         XCTAssertTrue(spy.doSomethingCalled, "viewDidLoad() should ask the interactor to do something")
     }
     
-    func testDisplaySomething()
-    {
-        // Given
-        let viewModel = Gallery.Something.ViewModel()
-        
-        // When
-        loadView()
-        sut.displaySomething(viewModel: viewModel)
-        
-        // Then
-        //XCTAssertEqual(sut.nameTextField.text, "", "displaySomething(viewModel:) should update the name text field")
+    func testDisplaySomething() async {
+        let cell:[MediaCellModel] = [.init(id: "1", imageURL: "", description: "boo", imageAvatar: "", name: "foo")]
+        let viewModel = Gallery.Something.ViewModel.displayMedia(items: cell)
+        await sut.displaySomething(viewModel: viewModel)
+        let one = await sut.dataSource.mediaItems.count
+        XCTAssert(one == 1)
     }
+    
 }

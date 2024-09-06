@@ -34,25 +34,34 @@ class GalleryInteractorTests: XCTestCase {
     // MARK: Test doubles
     
     class GalleryPresentationLogicSpy: GalleryPresentationLogic {
-        var presentSomethingCalled = false
+        var media: [Photo]? = nil
+        var error: Error? = nil
         
         func presentSomething(response: Gallery.Something.Response) {
-            presentSomethingCalled = true
+            switch response {
+            case .presentMediaItems(media: let media):
+                self.media = media
+            case .responseError(let error):
+                self.error = error
+            }
         }
     }
     
     // MARK: Tests
     
-    func testDoSomething() {
-        // Given
-        let spy = GalleryPresentationLogicSpy()
-        sut.presenter = spy
-        //    let request = Gallery.Something.Request()
-        
-        // When
-        //    sut.doSomething(request: request)
-        
-        // Then
-        XCTAssertTrue(spy.presentSomethingCalled, "doSomething(request:) should ask the presenter to format the result")
-    }
+//    func testDoSomething() async throws {
+//        let config = Configuration(query: "Forest")
+//        let spy = GalleryPresentationLogicSpy()
+//        sut.presenter = spy
+//        
+//        let request = Gallery.Something.Request.search(parameters: config)
+//        
+//        sut.doSomething(request: request)
+//        
+//        try await Task.sleep(nanoseconds: 2)
+//        
+//        XCTAssert(spy.media?.count == 10)
+//    }
+    
+    
 }

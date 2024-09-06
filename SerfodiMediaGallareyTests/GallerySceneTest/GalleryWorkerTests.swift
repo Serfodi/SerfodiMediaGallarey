@@ -17,29 +17,25 @@ class GalleryWorkerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        setupGalleryWorker()
+        sut = GalleryWorker()
     }
     
     override func tearDown() {
         sut = nil
         super.tearDown()
     }
-    
-    // MARK: Test setup
-    
-    func setupGalleryWorker() {
-        sut = GalleryWorker()
-    }
-    
+        
     // MARK: Test doubles
     
     // MARK: Tests
     
-    func testSomething() {
+    func testSomething() async throws {
         // Given
-        
+        let config = Configuration(query: "1")
         // When
+        let data = try await sut.getPhoto(parameters: config)
         
         // Then
+        XCTAssert(data.count > 0)
     }
 }
