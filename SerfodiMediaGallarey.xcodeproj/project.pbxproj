@@ -10,7 +10,6 @@
 		B03E5C282C8AE98C00A8965B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C272C8AE98C00A8965B /* AppDelegate.swift */; };
 		B03E5C2A2C8AE98C00A8965B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C292C8AE98C00A8965B /* SceneDelegate.swift */; };
 		B03E5C2C2C8AE98C00A8965B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C2B2C8AE98C00A8965B /* ViewController.swift */; };
-		B03E5C2F2C8AE98C00A8965B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B03E5C2E2C8AE98C00A8965B /* Base */; };
 		B03E5C312C8AE99300A8965B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B03E5C302C8AE99300A8965B /* Assets.xcassets */; };
 		B03E5C342C8AE99300A8965B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = B03E5C332C8AE99300A8965B /* Base */; };
 		B03E5C3F2C8AE99400A8965B /* SerfodiMediaGallareyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03E5C3E2C8AE99400A8965B /* SerfodiMediaGallareyTests.swift */; };
@@ -40,7 +39,6 @@
 		B03E5C272C8AE98C00A8965B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B03E5C292C8AE98C00A8965B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B03E5C2B2C8AE98C00A8965B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B03E5C2E2C8AE98C00A8965B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B03E5C302C8AE99300A8965B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B03E5C332C8AE99300A8965B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B03E5C352C8AE99300A8965B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -99,13 +97,9 @@
 		B03E5C262C8AE98C00A8965B /* SerfodiMediaGallarey */ = {
 			isa = PBXGroup;
 			children = (
-				B03E5C272C8AE98C00A8965B /* AppDelegate.swift */,
-				B03E5C292C8AE98C00A8965B /* SceneDelegate.swift */,
+				B03E5C572C8AEED400A8965B /* AppDelegate */,
 				B03E5C2B2C8AE98C00A8965B /* ViewController.swift */,
-				B03E5C2D2C8AE98C00A8965B /* Main.storyboard */,
-				B03E5C302C8AE99300A8965B /* Assets.xcassets */,
-				B03E5C322C8AE99300A8965B /* LaunchScreen.storyboard */,
-				B03E5C352C8AE99300A8965B /* Info.plist */,
+				B03E5C582C8AEF3B00A8965B /* Other */,
 			);
 			path = SerfodiMediaGallarey;
 			sourceTree = "<group>";
@@ -125,6 +119,25 @@
 				B03E5C4A2C8AE99400A8965B /* SerfodiMediaGallareyUITestsLaunchTests.swift */,
 			);
 			path = SerfodiMediaGallareyUITests;
+			sourceTree = "<group>";
+		};
+		B03E5C572C8AEED400A8965B /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				B03E5C272C8AE98C00A8965B /* AppDelegate.swift */,
+				B03E5C292C8AE98C00A8965B /* SceneDelegate.swift */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		B03E5C582C8AEF3B00A8965B /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				B03E5C302C8AE99300A8965B /* Assets.xcassets */,
+				B03E5C322C8AE99300A8965B /* LaunchScreen.storyboard */,
+				B03E5C352C8AE99300A8965B /* Info.plist */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +246,6 @@
 			files = (
 				B03E5C312C8AE99300A8965B /* Assets.xcassets in Resources */,
 				B03E5C342C8AE99300A8965B /* Base in Resources */,
-				B03E5C2F2C8AE98C00A8965B /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,14 +309,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		B03E5C2D2C8AE98C00A8965B /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B03E5C2E2C8AE98C00A8965B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		B03E5C322C8AE99300A8965B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -368,7 +372,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -425,7 +429,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -450,6 +454,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -478,6 +483,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
