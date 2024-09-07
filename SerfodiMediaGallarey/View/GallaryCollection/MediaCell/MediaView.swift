@@ -9,8 +9,8 @@ import UIKit
 
 class MediaView: UIView {
 
-    var imageView: UIImageView = {
-        let imageView = UIImageView()
+    var imageView: WebImageView = {
+        let imageView = WebImageView()
         imageView.clipsToBounds = true
         imageView.contentMode = .center
         imageView.backgroundColor = ColorAppearance.gray
@@ -20,8 +20,8 @@ class MediaView: UIView {
     
     let descriptionLabel = UILabel(title: "foo")
     
-    var imageAvatar: UIImageView = {
-        let imageView = UIImageView()
+    var imageAvatar: WebImageView = {
+        let imageView = WebImageView()
         imageView.clipsToBounds = true
         imageView.contentMode = .center
         imageView.layer.cornerRadius = 20

@@ -26,6 +26,11 @@ class MediaViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        view.imageView.cancelDownload()
+        view.imageAvatar.cancelDownload()
+    }
+    
 }
 
 extension MediaViewCell: SelfConfiguringCell {
@@ -37,6 +42,12 @@ extension MediaViewCell: SelfConfiguringCell {
         view.nameLabel.text = media.name
         view.imageView.image = UIImage(systemName: "photo.fill")
         view.imageAvatar.image = UIImage(systemName: "photo.fill")
+        if let url = URL(string: media.imageURL) {
+            view.imageView.set(url: url)
+        }
+        if let url = URL(string: media.imageAvatar) {
+            view.imageAvatar.set(url: url)
+        }
     }
     
 }
