@@ -14,11 +14,12 @@ class MediaViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         isAccessibilityElement = true
         accessibilityTraits = .button
+        
         var config = defaultBackgroundConfiguration()
         config.customView = view
-        config.cornerRadius = 10
         self.backgroundConfiguration = config
     }
     
@@ -31,6 +32,13 @@ class MediaViewCell: UICollectionViewCell {
         view.imageAvatar.cancelDownload()
     }
     
+    private func accessibility() {
+        var description: String? = nil
+        if let text = view.descriptionLabel.text, !text.isEmpty {
+            description = "\("WriteDescription".localized()): \(text)"
+        }
+        accessibilityLabel = [view.nameLabel.text, description].compactMap{$0}.joined(separator: ",")
+    }
 }
 
 extension MediaViewCell: SelfConfiguringCell {
@@ -38,16 +46,25 @@ extension MediaViewCell: SelfConfiguringCell {
     func configure<U>(with value: U) where U : Hashable {
         guard let media: MediaDisplayModel = value as? MediaDisplayModel else { return }
         self.media = media
+        
+        // configuration content
         view.descriptionLabel.text = media.description
         view.nameLabel.text = media.name
-        view.imageView.image = UIImage(systemName: "photo.fill")
-        view.imageAvatar.image = UIImage(systemName: "photo.fill")
         if let url = URL(string: media.imageURL) {
             view.imageView.set(url: url)
         }
         if let url = URL(string: media.imageAvatar) {
             view.imageAvatar.set(url: url)
         }
+        
+        // configuration Frame
+        let frames = media.size
+        view.imageView.frame = frames.imageViewFrame
+        view.descriptionLabel.frame = frames.descriptionLabelFrame
+        view.profileView.frame = frames.profileViewFrame
+        
+        // configuration accessibility
+        accessibility()
     }
     
 }

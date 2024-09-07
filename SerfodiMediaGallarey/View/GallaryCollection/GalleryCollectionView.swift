@@ -9,10 +9,15 @@ import UIKit
 
 class GalleryCollectionView: UICollectionView {
 
+    
+    
     // MARK: init
     
     public init() {
-        super.init(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout.create())
+//        UICollectionViewCompositionalLayout.create()
+        var collectionLayout = UICollectionViewFlowLayout()
+        collectionLayout.itemSize = UICollectionViewFlowLayout.automaticSize
+        super.init(frame: .zero, collectionViewLayout: collectionLayout)
         configuration()
     }
     
@@ -63,9 +68,11 @@ fileprivate extension UICollectionViewCompositionalLayout {
         group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: itemCount)
         
         group.interItemSpacing = .fixed(10)
+        
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 10
         section.contentInsets = NSDirectionalEdgeInsets.init(top: 10, leading: 10, bottom: 0, trailing: 0)
+        
         return section
     }
     

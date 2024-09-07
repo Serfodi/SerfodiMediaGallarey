@@ -33,3 +33,12 @@ final class MediaDataSource: UICollectionViewDiffableDataSource<Section, MediaCe
         self.apply(snapshot, animatingDifferences: animated)
     }
 }
+
+extension MediaDataSource: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let data = data else { return .zero }
+        return data[indexPath.row].size.totalSize
+    }
+    
+}

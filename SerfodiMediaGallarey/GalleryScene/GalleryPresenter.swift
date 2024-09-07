@@ -15,6 +15,13 @@ class GalleryPresenter: GalleryPresentationLogic {
     
     weak var viewController: GalleryDisplayLogic?
     
+    var calculate = CalculateCellSize(screenWidth: UIScreen.main.bounds.width)
+    
+    struct PhotoCellModel: PhotoSizeModel {
+        var width: Int
+        var height: Int
+    }
+    
     // MARK: Do something
     
     func presentSomething(response: Gallery.Something.Response) {
@@ -32,21 +39,16 @@ class GalleryPresenter: GalleryPresentationLogic {
             }
         }
     }
-    
-//    func convert(from photo: Photo) -> MediaCellModel {
-//        .init(id: photo.id,
-//              imageURL: photo.urls?.regular ?? "",
-//              description: photo.description ?? "",
-//              imageAvatar: photo.user?.profileImage?.small ?? "",
-//              name: photo.user?.username ?? "")
-//    }
-    
+        
     func convert(from photo: Photo) -> MediaCellModel {
-        .init(id: photo.id,
+        let size = calculate.sizes(description: photo.description, photo: PhotoCellModel(width: photo.width, height: photo.height))
+        
+        return .init(id: photo.id,
               imageURL: photo.urls.regular ?? "",
               description: photo.description ?? "",
               imageAvatar: photo.user.profileImage?.small ?? "",
-              name: photo.user.username)
+              name: photo.user.username, 
+              size: size)
     }
     
 }

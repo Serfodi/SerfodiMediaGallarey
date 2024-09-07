@@ -12,11 +12,13 @@ protocol MediaDisplayModel {
     var description: String { get }
     var imageAvatar: String { get }
     var name: String { get }
+    var size: MediaCellSize { get }
 //    var data: Date { get }
 //    var views: Int { get }
 }
 
 struct MediaCellModel: MediaDisplayModel {
+    
     var id: String
     
     /* MediaCellModel */
@@ -24,8 +26,20 @@ struct MediaCellModel: MediaDisplayModel {
     var description: String
     var imageAvatar: String
     var name: String
+    var size: MediaCellSize
 //    var data: Date
 //    var views: Int
+    
 }
 
-extension MediaCellModel: Hashable {}
+extension MediaCellModel: Hashable {
+    
+    static func == (lhs: MediaCellModel, rhs: MediaCellModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+}

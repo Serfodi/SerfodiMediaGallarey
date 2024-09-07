@@ -58,7 +58,7 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MediaViewCell.self)
-        collectionView.delegate = self
+        collectionView.delegate = dataSource
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -93,9 +93,9 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     
 }
 
-extension GalleryViewController: UICollectionViewDelegate {
-    
-    
-    
-}
+//extension GalleryViewController: UICollectionViewDelegateFlowLayout {
+//    
+//    
+//    
+//}
 
