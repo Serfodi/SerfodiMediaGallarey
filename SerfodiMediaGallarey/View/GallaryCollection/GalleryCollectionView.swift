@@ -8,23 +8,34 @@
 import UIKit
 
 class GalleryCollectionView: UICollectionView {
-
     
+    enum DisplayLayout: Int {
+        case one = 1
+        case two = 2
+    }
+    
+    private var layout = CollectionViewFlowLayout()
+    
+    /// Updates the collection grid
+    open var displayLayout: DisplayLayout = .one {
+        didSet {
+            guard displayLayout != oldValue else { return }
+            layout.column = displayLayout.rawValue
+            setCollectionViewLayout(layout, animated: true)
+        }
+    }
     
     // MARK: init
-    
-    public init() {
-//        UICollectionViewCompositionalLayout.create()
-        var collectionLayout = UICollectionViewFlowLayout()
-        collectionLayout.itemSize = UICollectionViewFlowLayout.automaticSize
-        super.init(frame: .zero, collectionViewLayout: collectionLayout)
+        
+    init() {
+        super.init(frame: .zero, collectionViewLayout: layout)
         configuration()
     }
     
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // MARK: metods
     
     public func layoutConstraints(in view: UIView) -> [NSLayoutConstraint] {
@@ -42,38 +53,15 @@ class GalleryCollectionView: UICollectionView {
         translatesAutoresizingMaskIntoConstraints = false
         allowsMultipleSelection = false
     }
-    
 }
 
-fileprivate extension UICollectionViewCompositionalLayout {
+
+class CollectionViewFlowLayout : UICollectionViewFlowLayout {
     
-    static func create() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout(section: self.createUserSection())
-        let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 30
-        layout.configuration = config
-        return layout
+    public var column: Int = 1
+        
+    override func prepare() {
+        sectionInset = UIEdgeInsets.init(top: 0, left: StaticCellSize.padding, bottom: 0, right: StaticCellSize.padding)
+        self.itemSize = UICollectionViewFlowLayout.automaticSize
     }
-    
-    private static func createUserSection() -> NSCollectionLayoutSection {
-        let itemCount = 2
-        
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        var groupSize = NSCollectionLayoutSize(widthDimension: .absolute(1), heightDimension: .absolute(1))
-        
-        groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.7))
-        var group = NSCollectionLayoutGroup(layoutSize: groupSize)
-        
-        group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: itemCount)
-        
-        group.interItemSpacing = .fixed(10)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 10
-        section.contentInsets = NSDirectionalEdgeInsets.init(top: 10, leading: 10, bottom: 0, trailing: 0)
-        
-        return section
-    }
-    
 }
