@@ -13,13 +13,14 @@ enum Gallery {
     enum Something {
         enum Request {
             case search(parameters: Configuration)
+            case changeGrid(display: GalleryCollectionView.DisplayLayout)
         }
         enum Response {
-            case presentMediaItems(media:[Photo])
+            case presentMediaItems(media:[Photo], display: GalleryCollectionView.DisplayLayout = .two)
             case responseError(Error)
         }
         enum ViewModel {
-            case displayMedia(items:[MediaCellModel])
+            case displayMedia(items:[MediaCellModel], display: GalleryCollectionView.DisplayLayout)
             case displayError(String)
         }
     }

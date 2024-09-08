@@ -15,7 +15,7 @@ class GalleryPresenter: GalleryPresentationLogic {
     
     weak var viewController: GalleryDisplayLogic?
     
-    var calculate = CalculateCellSize(screenWidth: UIScreen.main.bounds.width)
+    var calculate: CalculateCellSize!
     
     struct PhotoCellModel: PhotoSizeModel {
         var width: Int
@@ -26,12 +26,13 @@ class GalleryPresenter: GalleryPresentationLogic {
     
     func presentSomething(response: Gallery.Something.Response) {
         switch response {
-        case .presentMediaItems(media: let media):
-            print(media)
+        case .presentMediaItems(media: let media, display: let display):
+            // calculate size cell
+            calculate = CalculateCellSize(numberRow: display.rawValue)
+            // convert Photo -> MediaCellModel
             let cellModel = media.map { convert(from: $0) }
-            print(cellModel)
             Task {
-                await viewController?.displaySomething(viewModel: .displayMedia(items: cellModel))
+                await viewController?.displaySomething(viewModel: .displayMedia(items: cellModel, display: display))
             }
         case .responseError(let error):
             Task {
@@ -42,13 +43,14 @@ class GalleryPresenter: GalleryPresentationLogic {
         
     func convert(from photo: Photo) -> MediaCellModel {
         let size = calculate.sizes(description: photo.description, photo: PhotoCellModel(width: photo.width, height: photo.height))
-        
-        return .init(id: photo.id,
-              imageURL: photo.urls.regular ?? "",
-              description: photo.description ?? "",
-              imageAvatar: photo.user.profileImage?.small ?? "",
-              name: photo.user.username, 
-              size: size)
+        return MediaCellModel(id: photo.id,
+              imageURL: photo.urls.regular,
+              description: photo.description,
+              imageAvatar: photo.user.profileImage.small,
+              name: photo.user.username,
+                              size: size,
+                              data: photo.createdAt,
+                              like: photo.likes)
     }
     
 }

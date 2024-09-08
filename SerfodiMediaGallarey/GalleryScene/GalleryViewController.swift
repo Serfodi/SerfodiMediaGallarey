@@ -16,7 +16,7 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     var interactor: GalleryBusinessLogic?
     var router: (NSObjectProtocol & GalleryRoutingLogic & GalleryDataPassing)?
     
-    let collectionView: GalleryCollectionView
+    private var collectionView: GalleryCollectionView
     let dataSource : MediaDataSource
     private let searchView: SearchViewController
     
@@ -75,7 +75,14 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     
     // MARK: Action
         
-    @objc func changeGrid() {}
+    @objc func changeGrid() {
+        switch collectionView.displayLayout {
+        case .one:
+            interactor?.doSomething(request: .changeGrid(display: .two))
+        case .two:
+            interactor?.doSomething(request: .changeGrid(display: .one))
+        }
+    }
     
     func changeOrderBy(_ action: UIAction) {}
     
@@ -87,8 +94,9 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         
     func displaySomething(viewModel: Gallery.Something.ViewModel) {
         switch viewModel {
-        case .displayMedia(items: let items):
+        case .displayMedia(items: let items, display: let display):
             reloadData(with: items)
+            collectionView.displayLayout = display
         case .displayError(let error):
             showAlert(with: "Error".localized(), and: error)
         }
