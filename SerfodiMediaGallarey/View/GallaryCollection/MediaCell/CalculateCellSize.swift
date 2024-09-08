@@ -12,6 +12,12 @@ protocol PhotoSizeModel {
     var height: Int { get }
 }
 
+struct PhotoCellModel: PhotoSizeModel {
+    var width: Int
+    var height: Int
+}
+
+
 /// Describes the dimensions of the elements in the cells
 protocol MediaCellSize {
     var imageViewFrame: CGRect { get }

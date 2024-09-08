@@ -76,19 +76,20 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     // MARK: Action
         
     @objc func changeGrid() {
-        switch collectionView.displayLayout {
-        case .one:
-            interactor?.doSomething(request: .changeGrid(display: .two))
-        case .two:
-            interactor?.doSomething(request: .changeGrid(display: .one))
-        }
+        interactor?.doSomething(request: .changeGrid)
     }
     
-    func changeOrderBy(_ action: UIAction) {}
+    func changeOrderBy(_ action: UIAction) {
+        interactor?.doSomething(request: .orderBy)
+    }
     
-    func sortedByDate(_ action: UIAction) {}
+    func sortedByDate(_ action: UIAction) {
+        interactor?.doSomething(request: .sortedValue(.date))
+    }
     
-    func sortedByLike(_ action: UIAction) {}
+    func sortedByLike(_ action: UIAction) {
+        interactor?.doSomething(request: .sortedValue(.likes))
+    }
     
     // MARK: Do something
         

@@ -43,3 +43,13 @@ extension MediaCellModel: Hashable {
     }
     
 }
+
+extension MediaCellModel {
+    
+    enum ValueSort {
+        case likes
+        case date
+    }
+    
+}
+ 

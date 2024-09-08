@@ -13,10 +13,16 @@ enum Gallery {
     enum Something {
         enum Request {
             case search(parameters: Configuration)
-            case changeGrid(display: GalleryCollectionView.DisplayLayout)
+            case changeGrid
+            case orderBy
+            case sortedValue(MediaCellModel.ValueSort)
         }
         enum Response {
-            case presentMediaItems(media:[Photo], display: GalleryCollectionView.DisplayLayout = .two)
+            case responseChangeGrid(media:[Photo])
+            case responseOrderBy(media:[Photo])
+            case responseSortedValue(media:[Photo], sortedValue: MediaCellModel.ValueSort)
+            
+            case responseMedia(media:[Photo])
             case responseError(Error)
         }
         enum ViewModel {
@@ -25,3 +31,4 @@ enum Gallery {
         }
     }
 }
+// , display: GalleryCollectionView.DisplayLayout

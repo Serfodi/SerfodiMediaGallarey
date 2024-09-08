@@ -46,14 +46,22 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
             Task(priority: .userInitiated) {
                 do {
                     await photoRepository.setPhoto(try await worker.getPhoto(parameters: parameters))
-                    self.presenter?.presentSomething(response: .presentMediaItems(media: await photoRepository.get()))
+                    self.presenter?.presentSomething(response: .responseMedia(media: await photoRepository.get()))
                 } catch {
                     self.presenter?.presentSomething(response: .responseError(error))
                 }
             }
-        case .changeGrid(display: let display):
+        case .changeGrid:
             Task {
-                self.presenter?.presentSomething(response: .presentMediaItems(media: await photoRepository.get(), display: display))
+                self.presenter?.presentSomething(response: .responseChangeGrid(media: await photoRepository.get()))
+            }
+        case .orderBy:
+            Task {
+                self.presenter?.presentSomething(response: .responseOrderBy(media: await photoRepository.get()))
+            }
+        case .sortedValue(let sorted):
+            Task {
+                self.presenter?.presentSomething(response: .responseSortedValue(media: await photoRepository.get() , sortedValue: sorted))
             }
         }
     }
