@@ -19,7 +19,14 @@ class SearchTableViewController: UITableViewController {
     private let colorFilters: [ColorFilter] = [
         .init(title: "Black".localized(), filter: "black", color: .black),
         .init(title: "White".localized(), filter: "white", color: .white),
-        .init(title: "Yellow".localized(), filter: "yellow", color: .yellow)
+        .init(title: "Yellow".localized(), filter: "yellow", color: .systemYellow),
+        .init(title: "Orange".localized(), filter: "orange", color: .systemOrange),
+        .init(title: "Red".localized(), filter: "red", color: .systemRed),
+        .init(title: "Purple".localized(), filter: "purple", color: .systemPurple),
+        .init(title: "Magenta".localized(), filter: "magenta", color: .magenta),
+        .init(title: "Green".localized(), filter: "green", color: .systemGreen),
+        .init(title: "Teal".localized(), filter: "teal", color: .systemTeal),
+        .init(title: "Blue".localized(), filter: "blue", color: .systemBlue)
     ]
     
     private var dataSource: SearchDataSours!
