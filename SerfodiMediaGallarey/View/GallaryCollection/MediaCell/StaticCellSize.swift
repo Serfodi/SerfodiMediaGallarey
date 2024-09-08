@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum ConstantsCellSize {
+enum StaticCellSize {
     static let profileImageHight: CGFloat = 30
     static let padding: CGFloat = 10
+    static let padding2: CGFloat = 5
 }
