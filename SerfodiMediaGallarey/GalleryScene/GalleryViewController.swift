@@ -55,6 +55,7 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         super.loadView()
         view.addSubview(collectionView)
         NSLayoutConstraint.activate(collectionView.layoutConstraints(in: view))
+        configurationNavigationItem()
     }
     
     override func viewDidLoad() {
@@ -71,6 +72,16 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
+    
+    // MARK: Action
+        
+    @objc func changeGrid() {}
+    
+    func changeOrderBy(_ action: UIAction) {}
+    
+    func sortedByDate(_ action: UIAction) {}
+    
+    func sortedByLike(_ action: UIAction) {}
     
     // MARK: Do something
         
@@ -89,6 +100,27 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         dataSource.reload(data)
     }
     
+    private func configurationNavigationItem() {
+        // left item
+        navigationItem.leftBarButtonItem = .init(
+            image: StaticImage.displayMode,
+            "Change the photo grid".localized(),
+            self, #selector(changeGrid))
+        
+        // right item
+        let typeSorted = UIMenu(title: "OrderBy".localized(), children: [
+            UIAction(title: "Date".localized(), image: StaticImage.dateIcon, handler: sortedByDate),
+            UIAction(title: "Popular".localized(), image: StaticImage.popularIcon, handler: sortedByLike)
+        ])
+        let barButtonMenu = UIMenu(children: [
+            UIAction(title: "Sorted".localized(), image: StaticImage.orderBy, handler: changeOrderBy),
+            typeSorted
+        ])
+        navigationItem.rightBarButtonItem = .init(
+            image: StaticImage.orderBy,
+            "Sorting photos".localized(),
+            barButtonMenu)
+    }
 }
 
 // MARK: SearchDelegate
