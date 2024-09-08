@@ -18,12 +18,14 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     
     let collectionView: GalleryCollectionView
     let dataSource : MediaDataSource
+    private let searchView: SearchViewController
     
     // MARK: Object lifecycle
     
     init() {
         self.collectionView = GalleryCollectionView()
         self.dataSource = MediaDataSource(collectionView)
+        self.searchView = SearchViewController()
         super.init(nibName: nil, bundle: nil)
         setup()
     }
@@ -59,23 +61,19 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         super.viewDidLoad()
         collectionView.register(MediaViewCell.self)
         collectionView.delegate = dataSource
+        // setup search bar
+        searchView.searchDelegate = self
+        navigationItem.title = "Search".localized()
+        navigationItem.searchController = searchView
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         
-        doSomething()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     // MARK: Do something
-    
-    func doSomething() {
         
-        let config = Configuration(query: "Forest")
-        interactor?.doSomething(request: .search(parameters: config))
-        
-    }
-    
     func displaySomething(viewModel: Gallery.Something.ViewModel) {
         switch viewModel {
         case .displayMedia(items: let items):
@@ -93,9 +91,12 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     
 }
 
-//extension GalleryViewController: UICollectionViewDelegateFlowLayout {
-//    
-//    
-//    
-//}
+// MARK: SearchDelegate
+
+extension GalleryViewController: SearchDelegate {
+    
+    func clickedSearch(parameters: Configuration) {
+        interactor?.doSomething(request: .search(parameters: parameters))
+    }
+}
 
