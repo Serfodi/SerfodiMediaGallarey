@@ -16,14 +16,16 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     var interactor: GalleryBusinessLogic?
     var router: (NSObjectProtocol & GalleryRoutingLogic & GalleryDataPassing)?
     
-    let collectionView: GalleryCollectionView
+    private var collectionView: GalleryCollectionView
     let dataSource : MediaDataSource
+    private let searchView: SearchViewController
     
     // MARK: Object lifecycle
     
     init() {
         self.collectionView = GalleryCollectionView()
         self.dataSource = MediaDataSource(collectionView)
+        self.searchView = SearchViewController()
         super.init(nibName: nil, bundle: nil)
         setup()
     }
@@ -53,33 +55,49 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         super.loadView()
         view.addSubview(collectionView)
         NSLayoutConstraint.activate(collectionView.layoutConstraints(in: view))
+        configurationNavigationItem()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MediaViewCell.self)
-        collectionView.delegate = self
+        collectionView.delegate = dataSource
+        // setup search bar
+        searchView.searchDelegate = self
+        navigationItem.title = "Search".localized()
+        navigationItem.searchController = searchView
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+        
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    // MARK: Action
         
-        doSomething()
+    @objc func changeGrid() {
+        interactor?.doSomething(request: .changeGrid)
+    }
+    
+    func changeOrderBy(_ action: UIAction) {
+        interactor?.doSomething(request: .orderBy)
+    }
+    
+    func sortedByDate(_ action: UIAction) {
+        interactor?.doSomething(request: .sortedValue(.date))
+    }
+    
+    func sortedByLike(_ action: UIAction) {
+        interactor?.doSomething(request: .sortedValue(.likes))
     }
     
     // MARK: Do something
-    
-    func doSomething() {
         
-        let config = Configuration(query: "Forest")
-        interactor?.doSomething(request: .search(parameters: config))
-        
-    }
-    
     func displaySomething(viewModel: Gallery.Something.ViewModel) {
         switch viewModel {
-        case .displayMedia(items: let items):
+        case .displayMedia(items: let items, display: let display):
             reloadData(with: items)
+            collectionView.displayLayout = display
         case .displayError(let error):
             showAlert(with: "Error".localized(), and: error)
         }
@@ -91,11 +109,35 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         dataSource.reload(data)
     }
     
+    private func configurationNavigationItem() {
+        // left item
+        navigationItem.leftBarButtonItem = .init(
+            image: StaticImage.displayMode,
+            "Change the photo grid".localized(),
+            self, #selector(changeGrid))
+        
+        // right item
+        let typeSorted = UIMenu(title: "OrderBy".localized(), children: [
+            UIAction(title: "Date".localized(), image: StaticImage.dateIcon, handler: sortedByDate),
+            UIAction(title: "Popular".localized(), image: StaticImage.popularIcon, handler: sortedByLike)
+        ])
+        let barButtonMenu = UIMenu(children: [
+            UIAction(title: "Sorted".localized(), image: StaticImage.orderBy, handler: changeOrderBy),
+            typeSorted
+        ])
+        navigationItem.rightBarButtonItem = .init(
+            image: StaticImage.orderBy,
+            "Sorting photos".localized(),
+            barButtonMenu)
+    }
 }
 
-extension GalleryViewController: UICollectionViewDelegate {
+// MARK: SearchDelegate
+
+extension GalleryViewController: SearchDelegate {
     
-    
-    
+    func clickedSearch(parameters: Configuration) {
+        interactor?.doSomething(request: .search(parameters: parameters))
+    }
 }
 

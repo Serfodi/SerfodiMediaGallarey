@@ -13,12 +13,6 @@ enum Section: Hashable {
 
 final class MediaDataSource: UICollectionViewDiffableDataSource<Section, MediaCellModel> {
     
-    private var data : [MediaCellModel]?
-    
-    public var mediaItems: [MediaCellModel] {
-        data ?? []
-    }
-    
     init(_ collectionView: UICollectionView) {
         super.init(collectionView: collectionView) { tableView, indexPath, itemIdentifier in
             return tableView.reuse(MediaViewCell.self, with: itemIdentifier, indexPath)
@@ -26,10 +20,21 @@ final class MediaDataSource: UICollectionViewDiffableDataSource<Section, MediaCe
     }
 
     func reload(_ data: [MediaCellModel], animated: Bool = true) {
-        self.data = data
         var snapshot = NSDiffableDataSourceSnapshot<Section, MediaCellModel>()
         snapshot.appendSections([.main])
         snapshot.appendItems(data, toSection: .main)
         self.apply(snapshot, animatingDifferences: animated)
+    }
+}
+
+extension MediaDataSource: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let sectionId = sectionIdentifier(for: indexPath.section) else { return .zero }
+        switch sectionId {
+        case .main:
+            guard let model = itemIdentifier(for: indexPath) else { return .zero }
+            return model.size.totalSize
+        }
     }
 }

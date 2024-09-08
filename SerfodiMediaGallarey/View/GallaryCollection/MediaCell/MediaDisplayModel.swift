@@ -9,23 +9,47 @@ import Foundation
 
 protocol MediaDisplayModel {
     var imageURL: String { get }
-    var description: String { get }
+    var description: String? { get }
     var imageAvatar: String { get }
     var name: String { get }
-//    var data: Date { get }
-//    var views: Int { get }
+    var size: MediaCellSize { get }
+    var data: Date { get }
+    var like: Int { get }
 }
 
 struct MediaCellModel: MediaDisplayModel {
+    
     var id: String
     
     /* MediaCellModel */
     var imageURL: String
-    var description: String
+    var description: String?
     var imageAvatar: String
     var name: String
-//    var data: Date
-//    var views: Int
+    var size: MediaCellSize
+    var data: Date
+    var like: Int
+    
 }
 
-extension MediaCellModel: Hashable {}
+extension MediaCellModel: Hashable {
+    
+    static func == (lhs: MediaCellModel, rhs: MediaCellModel) -> Bool {
+        lhs.size.totalSize == rhs.size.totalSize && lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+}
+
+extension MediaCellModel {
+    
+    enum ValueSort {
+        case likes
+        case date
+    }
+    
+}
+ 
