@@ -10,7 +10,7 @@ import Foundation
 struct Photo: Decodable {
     
     struct UrlsSize: Decodable {
-        let regular: String?
+        let regular: String
     }
     
     struct Links: Decodable {
@@ -20,11 +20,12 @@ struct Photo: Decodable {
     let id: String
     let width: Int
     let height: Int
-    let createdAt: String
+    let createdAt: Date
     let description: String?
     let user: User
     let links: Links
     let urls: UrlsSize
+    let likes: Int
     
 }
 

@@ -10,6 +10,7 @@ import Foundation
 
 public struct Configuration {
     let query: String
+    let color: String?
     
     private var search: String {
         let trimmedString = query.trimmingCharacters(in: .whitespaces)
@@ -18,7 +19,11 @@ public struct Configuration {
     }
     
     var requestParameters: [String:String] {
-        ["query" : search]
+        var parameters = ["query" : search]
+        if let color = color {
+            parameters["color"] = color
+        }
+        return parameters
     }
     
 }
