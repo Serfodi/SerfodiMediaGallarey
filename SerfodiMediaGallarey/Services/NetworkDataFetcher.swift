@@ -19,7 +19,7 @@ class NetworkDataFetcher: DataFetcher {
         self.networking = networking
     }
     
-    /// Photo Search request
+    /// Photo Search request Get
     ///
     /// Parameters:
     ///  * query – Search terms
@@ -36,6 +36,7 @@ class NetworkDataFetcher: DataFetcher {
     
     private func decoderJSON<T: Decodable>(type: T.Type, from: Data?) -> T? {
         let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         guard
             let data = from,
