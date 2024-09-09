@@ -14,4 +14,7 @@ enum StaticImage {
     static let colorIcon = UIImage(systemName: "circle.fill")
     static let popularIcon = UIImage(systemName: "hand.thumbsup")
     static let dateIcon = UIImage(systemName: "calendar")
+    static let closeIcon = UIImage(systemName: "xmark")
+    static let sharedIcon = UIImage(systemName: "arrow.up")
+    static let infoIcon = UIImage(systemName: "info")
 }
