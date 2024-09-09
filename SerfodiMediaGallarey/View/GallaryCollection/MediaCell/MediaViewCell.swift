@@ -61,10 +61,10 @@ extension MediaViewCell: SelfConfiguringCell {
         // configuration content
         descriptionLabel.text = media.description
         nameLabel.text = media.name
-        if let url = URL(string: media.imageURL) {
+        if let url = URL(string: media.imageURL ?? "") {
             imageView.set(url: url)
         }
-        if let url = URL(string: media.imageAvatar) {
+        if let url = URL(string: media.imageAvatar ?? "") {
             imageAvatar.set(url: url)
         }
         

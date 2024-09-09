@@ -117,6 +117,7 @@ final class PhotoScrollView: UIScrollView {
     }
     
     func centerImage() {
+        guard imageZoomView != nil else { return }
         let boundsSize = self.bounds.size
         var frameToCenter = imageZoomView.frame
         
