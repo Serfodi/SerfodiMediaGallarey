@@ -59,6 +59,16 @@ class GalleryPresenter: GalleryPresentationLogic {
             Task {
                 await viewController?.displaySomething(viewModel: .displayPhoto)
             }
+            
+        case .responseNewPage(media: let media):
+            let items = prepareMedia(media)
+            Task {
+                await viewController?.displaySomething(viewModel: .displayNewPage(items: items))
+            }
+        case .presentFooterLoader:
+            Task {
+                await viewController?.displaySomething(viewModel: .displayFooterLoader)
+            }
         }
     }
     

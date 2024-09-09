@@ -11,6 +11,8 @@ import Foundation
 public struct Configuration {
     let query: String
     let color: String?
+    var page: Int = 1
+    var perPage: Int = 10
     
     private var search: String {
         let trimmedString = query.trimmingCharacters(in: .whitespaces)
@@ -20,9 +22,9 @@ public struct Configuration {
     
     var requestParameters: [String:String] {
         var parameters = ["query" : search]
-        if let color = color {
-            parameters["color"] = color
-        }
+        parameters["page"] = String(page)
+        parameters["per_page"] = String(perPage)
+        if let color = color { parameters["color"] = color }
         return parameters
     }
     

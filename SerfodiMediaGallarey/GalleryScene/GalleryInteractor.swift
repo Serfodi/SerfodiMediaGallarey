@@ -18,13 +18,17 @@ protocol GalleryDataStore {
 // MARK: Repository
 
 actor PhotoRepository {
-    private var photos: [Photo]?
+    private var photos: [Photo] = []
     
     func setPhotos(_ photos: [Photo]?) {
-        self.photos = photos
+        self.photos = photos ?? []
     }
     
-    func get() -> [Photo]? { photos }
+    func addPhotos(_ new: [Photo]?) {
+        self.photos += new ?? []
+    }
+    
+    func get() -> [Photo] { photos }
 }
 
 // MARK: Interactor
@@ -67,9 +71,20 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
             }
         case .getPhoto(id: let id):
             Task {
-                let item = await photoRepository.get()!.first(where: { $0.id == id })!
+                let item = await photoRepository.get().first(where: { $0.id == id })!
                 self.photo = item
                 self.presenter?.presentSomething(response: .responseMediaItem)
+            }
+        case .loadPage:
+            self.presenter?.presentSomething(response: .presentFooterLoader)
+            Task(priority: .userInitiated) {
+                do {
+                    let new = try await worker.getNewPhotos()
+                    await photoRepository.addPhotos(new)
+                    self.presenter?.presentSomething(response: .responseNewPage(media: await photoRepository.get()))
+                } catch {
+                    self.presenter?.presentSomething(response: .responseError(error))
+                }
             }
         }
     }

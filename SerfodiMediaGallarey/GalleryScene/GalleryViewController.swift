@@ -62,9 +62,14 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         super.viewDidLoad()
         collectionView.register(MediaViewCell.self)
         collectionView.delegate = dataSource
+        dataSource.registerFooter(collectionView.createRefreshControl())
         dataSource.selected = { [weak self] in
             self?.selectedCell($0)
         }
+        dataSource.didEndCollection = { [weak self] in
+            self?.loadNew()
+        }
+//        collectionView.setRefreshControl(self, action: #selector(refresh))
         // setup search bar
         searchView.searchDelegate = self
         navigationItem.title = "Search".localized()
@@ -82,7 +87,13 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     }
     
     // MARK: Action
-        
+    
+    @objc func refresh() {}
+    
+    func loadNew() {
+        interactor?.doSomething(request: .loadPage)
+    }
+    
     @objc func changeGrid() {
         interactor?.doSomething(request: .changeGrid)
     }
@@ -110,10 +121,20 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         case .displayMedia(items: let items, display: let display):
             reloadData(with: items)
             collectionView.displayLayout = display
+            
         case .displayError(let error):
+            if let stop = collectionView.stopLoading { stop() }
             showAlert(with: "Error".localized(), and: error)
+            
         case .displayPhoto:
             router?.routeToDetail()
+            
+        case .displayNewPage(items: let items):
+            reloadData(with: items)
+            if let stop = collectionView.stopLoading { stop() }
+            
+        case .displayFooterLoader:
+            if let start = collectionView.startLoading { start() }
         }
     }
     
