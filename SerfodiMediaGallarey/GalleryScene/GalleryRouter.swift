@@ -8,7 +8,7 @@
 import UIKit
 
 @objc protocol GalleryRoutingLogic {
-//  func routeToSomewhere(navigateTo: UIViewController)
+    func routeToDetail()
 }
 
 protocol GalleryDataPassing {
@@ -21,17 +21,22 @@ class GalleryRouter: NSObject, GalleryRoutingLogic, GalleryDataPassing {
   
   // MARK: Routing
   
-  //func routeToSomewhere(navigateTo: UIViewController) {}
+  func routeToDetail() {
+      let destinationVC = DetailPhotoViewController()
+      var destinationDS = destinationVC.router!.dataStore!
+      passDataToSomewhere(source: dataStore!, destination: &destinationDS)
+      navigateToSomewhere(source: viewController!, destination: destinationVC)
+  }
 
-  // MARK: Navigation
-  
-  //func navigateToSomewhere(source: GalleryViewController, destination: SomewhereViewController) {
-  //  source.show(destination, sender: nil)
-  //}
-  
-  // MARK: Passing data
-  
-  //func passDataToSomewhere(source: GalleryDataStore, destination: inout SomewhereDataStore) {
-  //  destination.name = source.name
-  //}
+    // MARK: Navigation
+    
+    func navigateToSomewhere(source: GalleryViewController, destination: DetailPhotoViewController) {
+        source.navigationController?.pushViewController(destination, animated: true)
+    }
+    
+    // MARK: Passing data
+    
+    func passDataToSomewhere(source: GalleryDataStore, destination: inout DetailPhotoDataStore) {
+        destination.photo = source.photo
+    }
 }
