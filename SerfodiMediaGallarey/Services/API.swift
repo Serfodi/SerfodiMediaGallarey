@@ -13,6 +13,7 @@ enum API {
     
     // endpoints
     static let photosPath = "/search/photos"
+    static let photos = "/photos/"
     
     // keys
     static let accessKey =  Environment.accessKey
