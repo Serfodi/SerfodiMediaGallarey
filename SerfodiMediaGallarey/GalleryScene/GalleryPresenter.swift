@@ -15,10 +15,10 @@ class GalleryPresenter: GalleryPresentationLogic {
     
     weak var viewController: GalleryDisplayLogic?
     
-    // Data
+    // Data View
     var sorted: MediaCellModel.ValueSort = .likes
     var order: Bool = true
-    var display: GalleryCollectionView.DisplayLayout = .two // default value
+    var display: GalleryCollectionView.DisplayLayout = .two
     
     // class
     var calculate: CalculateCellSize!
@@ -37,12 +37,7 @@ class GalleryPresenter: GalleryPresentationLogic {
                 await viewController?.displaySomething(viewModel: .displayError(error.localizedDescription))
             }
         case .responseChangeGrid(media: let media):
-            switch display {
-            case .one:
-                display = .two
-            case .two:
-                display = .one
-            }
+            self.display.toggle()
             let items = prepareMedia(media)
             Task {
                 await viewController?.displaySomething(viewModel: .displayMedia(items: items, display: display))
@@ -59,10 +54,17 @@ class GalleryPresenter: GalleryPresentationLogic {
             Task {
                 await viewController?.displaySomething(viewModel: .displayMedia(items: items, display: display))
             }
+            
+        case .responseMediaItem:
+            Task {
+                await viewController?.displaySomething(viewModel: .displayPhoto)
+            }
         }
     }
     
-    func prepareMedia(_ media: [Photo]) -> [MediaCellModel] {
+    
+    func prepareMedia(_ media: [Photo]?) -> [MediaCellModel] {
+        guard let media = media else { return [] }
         calculate = CalculateCellSize(numberRow: display.rawValue)
         var items = media.map { convert(from: $0) }
         sorted(&items)
@@ -70,24 +72,24 @@ class GalleryPresenter: GalleryPresentationLogic {
     }
     
     func convert(from photo: Photo) -> MediaCellModel {
-        let size = calculate.sizes(description: photo.description, photo: PhotoCellModel(width: photo.width, height: photo.height))
+        let size = calculate.sizes(description: photo.description, photo: PhotoCellModel(width: photo.width ?? 0, height: photo.height ?? 0))
         return MediaCellModel(id: photo.id,
-              imageURL: photo.urls.regular,
+                              imageURL: photo.urls?.regular ?? "",
               description: photo.description,
-              imageAvatar: photo.user.profileImage.small,
-              name: photo.user.username,
+                              imageAvatar: photo.user?.profileImage?.small ?? "",
+                              name: photo.user!.username ?? "",
                               size: size,
-                              data: photo.createdAt,
-                              like: photo.likes)
+                              date: photo.createdAt ?? Date(),
+                              like: photo.likes ?? 0)
     }
     
     func sorted(_ items: inout [MediaCellModel]) {
         items.sort { lhs, rhs in
             switch sorted {
             case .likes:
-                order ? lhs.like > rhs.like : lhs.like < rhs.like
+                return order ? lhs.like > rhs.like  : lhs.like  < rhs.like
             case .date:
-                order ? lhs.data > rhs.data : lhs.data < rhs.data
+                return order ? lhs.date > rhs.date : lhs.date < rhs.date
             }
         }
     }

@@ -15,7 +15,7 @@ class GalleryWorker {
         self.fetcher = NetworkDataFetcher(networking: NetworkService())
     }
     
-    func getPhoto(parameters: Configuration) async throws -> [Photo] {
-        try await fetcher.getPhoto(parameters: parameters.requestParameters) ?? []
+    func getPhotos(parameters: Configuration) async throws -> [Photo]? {
+        try await fetcher.getPhotos(parameters: parameters.requestParameters)
     }
 }

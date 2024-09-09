@@ -12,6 +12,13 @@ class GalleryCollectionView: UICollectionView {
     enum DisplayLayout: Int {
         case one = 1
         case two = 2
+        
+        mutating func toggle() {
+            switch self {
+            case .one: self = .two
+            case .two: self = .one
+            }
+        }
     }
     
     private var layout = CollectionViewFlowLayout()

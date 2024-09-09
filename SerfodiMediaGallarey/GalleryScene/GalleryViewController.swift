@@ -19,7 +19,7 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     private var collectionView: GalleryCollectionView
     let dataSource : MediaDataSource
     private let searchView: SearchViewController
-    
+        
     // MARK: Object lifecycle
     
     init() {
@@ -62,6 +62,9 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         super.viewDidLoad()
         collectionView.register(MediaViewCell.self)
         collectionView.delegate = dataSource
+        dataSource.selected = { [weak self] in
+            self?.selectedCell($0)
+        }
         // setup search bar
         searchView.searchDelegate = self
         navigationItem.title = "Search".localized()
@@ -69,6 +72,11 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
         
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -91,6 +99,10 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         interactor?.doSomething(request: .sortedValue(.likes))
     }
     
+    func selectedCell(_ mediaId: String) {
+        interactor?.doSomething(request: .getPhoto(id: mediaId))
+    }
+    
     // MARK: Do something
         
     func displaySomething(viewModel: Gallery.Something.ViewModel) {
@@ -100,6 +112,8 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
             collectionView.displayLayout = display
         case .displayError(let error):
             showAlert(with: "Error".localized(), and: error)
+        case .displayPhoto:
+            router?.routeToDetail()
         }
     }
     

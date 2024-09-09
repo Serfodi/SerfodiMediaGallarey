@@ -11,20 +11,20 @@ protocol GalleryBusinessLogic {
     func doSomething(request: Gallery.Something.Request)
 }
 
-protocol GalleryDataStore {}
+protocol GalleryDataStore {
+    var photo: Photo? { get set }
+}
 
 // MARK: Repository
 
 actor PhotoRepository {
     private var photos: [Photo]?
     
-    func setPhoto(_ photos: [Photo]) {
+    func setPhotos(_ photos: [Photo]?) {
         self.photos = photos
     }
     
-    func get() -> [Photo] {
-        photos ?? []
-    }
+    func get() -> [Photo]? { photos }
 }
 
 // MARK: Interactor
@@ -35,6 +35,8 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
     
     // MARK: Data
     var photoRepository = PhotoRepository()
+    // data for detail photo VC
+    var photo: Photo?
     
     // MARK: Do something
     
@@ -45,7 +47,7 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
         case .search(parameters: let parameters):
             Task(priority: .userInitiated) {
                 do {
-                    await photoRepository.setPhoto(try await worker.getPhoto(parameters: parameters))
+                    await photoRepository.setPhotos(try await worker.getPhotos(parameters: parameters))
                     self.presenter?.presentSomething(response: .responseMedia(media: await photoRepository.get()))
                 } catch {
                     self.presenter?.presentSomething(response: .responseError(error))
@@ -62,6 +64,12 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
         case .sortedValue(let sorted):
             Task {
                 self.presenter?.presentSomething(response: .responseSortedValue(media: await photoRepository.get() , sortedValue: sorted))
+            }
+        case .getPhoto(id: let id):
+            Task {
+                let item = await photoRepository.get()!.first(where: { $0.id == id })!
+                self.photo = item
+                self.presenter?.presentSomething(response: .responseMediaItem)
             }
         }
     }

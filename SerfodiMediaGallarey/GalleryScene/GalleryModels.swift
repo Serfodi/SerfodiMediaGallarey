@@ -16,18 +16,21 @@ enum Gallery {
             case changeGrid
             case orderBy
             case sortedValue(MediaCellModel.ValueSort)
+            case getPhoto(id: String)
         }
         enum Response {
-            case responseChangeGrid(media:[Photo])
-            case responseOrderBy(media:[Photo])
-            case responseSortedValue(media:[Photo], sortedValue: MediaCellModel.ValueSort)
+            case responseChangeGrid(media:[Photo]?)
+            case responseOrderBy(media:[Photo]?)
+            case responseSortedValue(media:[Photo]?, sortedValue: MediaCellModel.ValueSort)
             
-            case responseMedia(media:[Photo])
+            case responseMediaItem
+            case responseMedia(media:[Photo]?)
             case responseError(Error)
         }
         enum ViewModel {
             case displayMedia(items:[MediaCellModel], display: GalleryCollectionView.DisplayLayout)
             case displayError(String)
+            case displayPhoto
         }
     }
 }

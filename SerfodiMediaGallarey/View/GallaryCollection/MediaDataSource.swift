@@ -13,6 +13,8 @@ enum Section: Hashable {
 
 final class MediaDataSource: UICollectionViewDiffableDataSource<Section, MediaCellModel> {
     
+    public var selected: ((String) -> ())?
+    
     init(_ collectionView: UICollectionView) {
         super.init(collectionView: collectionView) { tableView, indexPath, itemIdentifier in
             return tableView.reuse(MediaViewCell.self, with: itemIdentifier, indexPath)
@@ -37,4 +39,14 @@ extension MediaDataSource: UICollectionViewDelegateFlowLayout {
             return model.size.totalSize
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let sectionId = sectionIdentifier(for: indexPath.section) else { return }
+        switch sectionId {
+        case .main:
+            guard let model = itemIdentifier(for: indexPath), let selected = selected else { return }
+            selected(model.id)
+        }
+    }
+    
 }
