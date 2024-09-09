@@ -8,7 +8,8 @@
 import UIKit
 
 @objc protocol DetailPhotoRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func routeToDetailInfo()
+    func routeToShared()
 }
 
 protocol DetailPhotoDataPassing {
@@ -16,37 +17,33 @@ protocol DetailPhotoDataPassing {
 }
 
 class DetailPhotoRouter: NSObject, DetailPhotoRoutingLogic, DetailPhotoDataPassing {
+    
     weak var viewController: DetailPhotoViewController?
     var dataStore: DetailPhotoDataStore?
     
     // MARK: Routing
     
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
-    //{
-    //  if let segue = segue {
-    //    let destinationVC = segue.destination as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //  } else {
-    //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-    //  }
-    //}
+    func routeToDetailInfo() {
+        let destinationVC = DetailInfoViewController(photo: dataStore!.photo)
+        navigateToDetailInfo(source: viewController!, destination: destinationVC)
+    }
+    
+    func routeToShared() {
+        let vc = UIActivityViewController(activityItems: [dataStore!.fullImage!], applicationActivities: [])
+        navigateToShared(source: viewController!, destination: vc)
+    }
     
     // MARK: Navigation
     
-    //func navigateToSomewhere(source: DetailPhotoViewController, destination: SomewhereViewController)
-    //{
-    //  source.show(destination, sender: nil)
-    //}
+    func navigateToDetailInfo(source: DetailPhotoViewController, destination: UIViewController) {
+        destination.modalPresentationStyle = .pageSheet
+        let sheet = destination.sheetPresentationController
+        sheet?.detents = [.medium()]
+        source.present(destination, animated: true)
+    }
     
-    // MARK: Passing data
+    func navigateToShared(source: DetailPhotoViewController, destination: UIActivityViewController) {
+        source.present(destination, animated: true)
+    }
     
-    //func passDataToSomewhere(source: DetailPhotoDataStore, destination: inout SomewhereDataStore)
-    //{
-    //  destination.name = source.name
-    //}
 }

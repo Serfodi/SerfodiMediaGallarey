@@ -9,7 +9,16 @@ import UIKit
 
 class DetailPhotoWorker {
     
-    func doSomeWork() {
-        
+    let download = DownloadImage()
+    var fetcher: DataFetcher = NetworkDataFetcher(networking: NetworkService())
+    
+    func loadImage(urlString: String?)  async throws -> UIImage? {
+        guard let url = URL(string: urlString ?? "") else { return nil }
+        return try await download.load(url: url)
     }
+    
+    func loadInfo(id: String)  async throws -> Photo? {
+        try await fetcher.getPhotoInfo(id: id)
+    }
+    
 }
