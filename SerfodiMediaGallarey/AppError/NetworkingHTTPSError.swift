@@ -26,15 +26,15 @@ enum HTTPStatusCode: Int, Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .badRequest:
-            return "Bad Request"
+            return "Bad Request: The request was unacceptable, often due to missing a required parameter"
         case .unauthorized:
-            return "Unauthorized"
+            return "Unauthorized: Invalid Access Token"
         case .paymentRequired:
             return "Payment Required"
         case .forbidden:
-            return "Forbidden"
+            return "Forbidden: Missing permissions to perform request"
         case .notFound:
-            return "notFound"
+            return "Not Found: The requested resource doesn’t exist"
         case .methodNotAllowed:
             return "Method not allowed"
         case .notAcceptable:
