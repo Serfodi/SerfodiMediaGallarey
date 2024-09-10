@@ -44,7 +44,8 @@ class DetailPhotoInteractor: DetailPhotoBusinessLogic, DetailPhotoDataStore {
             Task {
                 do {
                     let info = try await worker.loadInfo(id: photo.id)
-                    
+                    self.photo.location = info?.location
+                    self.photo.exif = info?.exif
                     presenter?.presentSomething(response: .responseMoreInfo)
                 } catch {
                     presenter?.presentSomething(response: .responseError(error))

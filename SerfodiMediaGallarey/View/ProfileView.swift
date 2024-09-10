@@ -60,7 +60,7 @@ class ProfileView: UIView {
         imageAvatar.contentMode = .scaleAspectFill
         imageAvatar.clipsToBounds = true
         imageAvatar.layer.cornerRadius = StaticCellSize.profileImageHight / 2
-        imageAvatar.backgroundColor = ColorAppearance.gray
+        imageAvatar.backgroundColor = ColorAppearance.lightGray
     }
     
     private func configurationLayout() {

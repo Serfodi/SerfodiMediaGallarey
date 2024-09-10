@@ -8,13 +8,14 @@
 import Foundation
 
 struct Exif: Decodable {
+    let make: String?
+    let model: String?
+    let name: String?
+    let exposureTime: String?
+    let aperture: String?
+    let focalLength: String?
+//    let iso: String?
     
-    let aperture: String
-    let exposureTime: String
-    let focalLength: String
-    let iso: String
-    let make: String
-    let model: String
 }
 
 struct Location: Decodable {

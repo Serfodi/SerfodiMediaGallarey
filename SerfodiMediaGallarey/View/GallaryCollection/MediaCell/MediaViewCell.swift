@@ -95,7 +95,7 @@ private extension MediaViewCell {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 10
         descriptionLabel.numberOfLines = 0
-        imageView.backgroundColor = ColorAppearance.gray
+        imageView.backgroundColor = ColorAppearance.lightGray
     }
     
     private func configurationFrame() {

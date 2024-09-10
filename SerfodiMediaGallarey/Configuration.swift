@@ -12,7 +12,7 @@ public struct Configuration {
     let query: String
     let color: String?
     var page: Int = 1
-    let perPage = 10
+    let perPage = 30
     
     private var search: String {
         let trimmedString = query.trimmingCharacters(in: .whitespaces)
