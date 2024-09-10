@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+enum DataError: Error, LocalizedError {
+    case notData
+    
+    var errorDescription: String? {
+        switch self {
+        case .notData:
+            return "Data is nil".localized()
+        }
+    }
+}

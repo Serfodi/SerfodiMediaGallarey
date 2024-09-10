@@ -68,7 +68,7 @@ extension MediaDataSource: UICollectionViewDelegateFlowLayout {
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
         
-        if offsetY >= (contentHeight - height) {
+        if (offsetY) > (contentHeight - height) {
             guard let didEndCollection = didEndCollection else { return }
             didEndCollection()
         }

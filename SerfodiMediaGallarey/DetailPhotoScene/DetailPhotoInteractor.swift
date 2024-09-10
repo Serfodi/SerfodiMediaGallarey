@@ -32,7 +32,7 @@ class DetailPhotoInteractor: DetailPhotoBusinessLogic, DetailPhotoDataStore {
             
             Task {
                 do {
-                    let image = try await worker.loadImage(urlString: photo.urls?.regular)
+                    let image = try await worker.loadImage(urlString: photo.urls.regular)
                     presenter?.presentSomething(response: .responsePhoto(image: image))
                 } catch {
                     presenter?.presentSomething(response: .responseError(error))
@@ -55,7 +55,7 @@ class DetailPhotoInteractor: DetailPhotoBusinessLogic, DetailPhotoDataStore {
             
             Task {
                 do {
-                    let image = try await worker.loadImage(urlString: photo.urls?.full)
+                    let image = try await worker.loadImage(urlString: photo.urls.full)
                     self.fullImage = image
                     presenter?.presentSomething(response: .responseFullPhoto)
                 } catch {
