@@ -18,8 +18,8 @@ struct User: Decodable {
     }
     
     let id: String
-    let username: String?
-    let profileImage: ProfileImageSize?
+    let username: String
+    let profileImage: ProfileImageSize
     let links: Links?
     let instagramUsername: String?
     let twitterUsername: String?

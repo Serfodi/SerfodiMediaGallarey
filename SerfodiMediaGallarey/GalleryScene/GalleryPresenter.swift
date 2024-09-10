@@ -94,18 +94,17 @@ class GalleryPresenter: GalleryPresentationLogic {
     }
     
     func convert(from photo: Photo) -> MediaCellModel {
-        let size = calculate.sizes(description: photo.description, photo: PhotoCellModel(width: photo.width ?? 0, height: photo.height ?? 0))
+        let size = calculate.sizes(description: photo.description, photo: PhotoCellModel(width: photo.width, height: photo.height))
         
-        let photoUrlString: String = self.display == .two ? photo.urls?.thumb ?? "" : photo.urls?.small ?? ""
+        let photoUrlString: String = self.display == .two ? photo.urls.thumb ?? "" : photo.urls.small ?? ""
         
         return MediaCellModel(id: photo.id,
                               imageURL: photoUrlString,
-              description: photo.description,
-                              imageAvatar: photo.user?.profileImage?.small ?? "",
-                              name: photo.user!.username ?? "",
+                              description: photo.description,
+                              user: photo.user,
                               size: size,
                               date: photo.createdAt ?? Date(),
-                              like: photo.likes ?? 0)
+                              like: photo.likes)
     }
     
     func sorted(_ items: inout [MediaCellModel]) {
@@ -113,7 +112,7 @@ class GalleryPresenter: GalleryPresentationLogic {
         items.sort { lhs, rhs in
             switch sorted {
             case .likes:
-                return order ? lhs.like > rhs.like  : lhs.like  < rhs.like
+                return order ? lhs.like > rhs.like  : lhs.like < rhs.like
             case .date:
                 return order ? lhs.date > rhs.date : lhs.date < rhs.date
             }
