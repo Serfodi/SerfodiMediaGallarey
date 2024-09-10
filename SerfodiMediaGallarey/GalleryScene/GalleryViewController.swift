@@ -69,7 +69,7 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         dataSource.didEndCollection = { [weak self] in
             self?.loadNew()
         }
-//        collectionView.setRefreshControl(self, action: #selector(refresh))
+        collectionView.setRefreshControl(self, action: #selector(refresh))
         // setup search bar
         searchView.searchDelegate = self
         navigationItem.title = "Search".localized()
@@ -88,7 +88,9 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     
     // MARK: Action
     
-    @objc func refresh() {}
+    @objc func refresh() {
+        interactor?.doSomething(request: .refreshPage)
+    }
     
     func loadNew() {
         interactor?.doSomething(request: .loadPage)
@@ -118,23 +120,32 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         
     func displaySomething(viewModel: Gallery.Something.ViewModel) {
         switch viewModel {
-        case .displayMedia(items: let items, display: let display):
-            reloadData(with: items)
-            collectionView.displayLayout = display
+        case .displayMedia(media: let media):
+            reloadData(with: media)
             
         case .displayError(let error):
-            if let stop = collectionView.stopLoading { stop() }
             showAlert(with: "Error".localized(), and: error)
+            // stop all animation
+            if let stop = collectionView.stopLoading { stop() }
+            collectionView.refreshControl?.endRefreshing()
             
-        case .displayPhoto:
-            router?.routeToDetail()
-            
-        case .displayNewPage(items: let items):
-            reloadData(with: items)
+        case .displayNewMedia(media: let media):
+            reloadData(with: media)
             if let stop = collectionView.stopLoading { stop() }
             
         case .displayFooterLoader:
             if let start = collectionView.startLoading { start() }
+            
+        case .displayRefreshMedia(media: let media):
+            reloadData(with: media)
+            collectionView.refreshControl?.endRefreshing()
+            
+        case .displayNewGrid(media: let media, display: let display):
+            collectionView.displayLayout = display
+            reloadData(with: media)
+            
+        case .displaySelectedPhoto:
+            router?.routeToDetail()
         }
     }
     

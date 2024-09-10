@@ -17,15 +17,27 @@ class GalleryWorker {
         self.fetcher = NetworkDataFetcher(networking: NetworkService())
     }
     
-    func getPhotos(parameters: Configuration) async throws -> [Photo]? {
+    func getPhotos(parameters: Configuration) async throws -> [Photo] {
         self.configuration = parameters
-        return try await fetcher.getPhotos(parameters: parameters.requestParameters)
+        let data = try await fetcher.getPhotos(parameters: parameters.requestParameters)
+        guard let data = data else { throw DataError.notData  }
+        return data
     }
     
-    func getNewPhotos() async throws -> [Photo]? {
-        guard configuration != nil else { return nil }
+    func getFirstPage() async throws -> [Photo] {
+        guard configuration != nil else { return [] }
+        self.configuration?.page = 1
+        let data = try await fetcher.getPhotos(parameters: configuration!.requestParameters)
+        guard let data = data else { throw DataError.notData  }
+        return data
+    }
+    
+    func getNewPhotos() async throws -> [Photo] {
+        guard configuration != nil else { return [] }
         self.configuration?.page += 1
-        return try await fetcher.getPhotos(parameters: configuration!.requestParameters)
+        let data = try await fetcher.getPhotos(parameters: configuration!.requestParameters)
+        guard let data = data else { throw DataError.notData  }
+        return data
     }
     
 }

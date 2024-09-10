@@ -20,12 +20,12 @@ protocol GalleryDataStore {
 actor PhotoRepository {
     private var photos: [Photo] = []
     
-    func setPhotos(_ photos: [Photo]?) {
-        self.photos = photos ?? []
+    func setPhotos(_ photos: [Photo]) {
+        self.photos = photos
     }
     
-    func addPhotos(_ new: [Photo]?) {
-        self.photos += new ?? []
+    func add(_ new: [Photo]) {
+        photos += new
     }
     
     func get() -> [Photo] { photos }
@@ -51,40 +51,54 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
         case .search(parameters: let parameters):
             Task(priority: .userInitiated) {
                 do {
-                    await photoRepository.setPhotos(try await worker.getPhotos(parameters: parameters))
-                    self.presenter?.presentSomething(response: .responseMedia(media: await photoRepository.get()))
+                    let photos = try await worker.getPhotos(parameters: parameters)
+                    await photoRepository.setPhotos(photos)
+                    self.presenter?.presentSomething(response: .presentPhotos(photos: await photoRepository.get()))
                 } catch {
-                    self.presenter?.presentSomething(response: .responseError(error))
+                    self.presenter?.presentSomething(response: .presentError(error))
                 }
             }
-        case .changeGrid:
-            Task {
-                self.presenter?.presentSomething(response: .responseChangeGrid(media: await photoRepository.get()))
-            }
-        case .orderBy:
-            Task {
-                self.presenter?.presentSomething(response: .responseOrderBy(media: await photoRepository.get()))
-            }
-        case .sortedValue(let sorted):
-            Task {
-                self.presenter?.presentSomething(response: .responseSortedValue(media: await photoRepository.get() , sortedValue: sorted))
-            }
-        case .getPhoto(id: let id):
-            Task {
-                let item = await photoRepository.get().first(where: { $0.id == id })!
-                self.photo = item
-                self.presenter?.presentSomething(response: .responseMediaItem)
+        case .refreshPage:
+            Task(priority: .userInitiated) {
+                do {
+                    let photos = try await worker.getFirstPage()
+                    await photoRepository.setPhotos(photos)
+                    self.presenter?.presentSomething(response: .presentRefreshPhotos(photos: photos))
+                } catch {
+                    self.presenter?.presentSomething(response: .presentError(error))
+                }
             }
         case .loadPage:
             self.presenter?.presentSomething(response: .presentFooterLoader)
             Task(priority: .userInitiated) {
                 do {
                     let new = try await worker.getNewPhotos()
-                    await photoRepository.addPhotos(new)
-                    self.presenter?.presentSomething(response: .responseNewPage(media: await photoRepository.get()))
+                    await photoRepository.add(new)
+                    let photos = await photoRepository.get()
+                    self.presenter?.presentSomething(response: .presentNewPhotos(photos: photos))
                 } catch {
-                    self.presenter?.presentSomething(response: .responseError(error))
+                    self.presenter?.presentSomething(response: .presentError(error))
                 }
+            }
+        case .changeGrid:
+            Task {
+                let photos = await photoRepository.get()
+                self.presenter?.presentSomething(response: .presentChangeGrid(photos: photos))
+            }
+        case .orderBy:
+            Task {
+                let photos = await photoRepository.get()
+                self.presenter?.presentSomething(response: .presentOrderBy(photos: photos))
+            }
+        case .sortedValue(let sorted):
+            Task {
+                let photos = await photoRepository.get()
+                self.presenter?.presentSomething(response: .presentSortedValue(photos: photos, sortedValue: sorted))
+            }
+        case .getPhoto(id: let id):
+            Task {
+                self.photo = await photoRepository.get().first(where: { $0.id == id })!
+                self.presenter?.presentSomething(response: .presentSelectedPhoto)
             }
         }
     }
