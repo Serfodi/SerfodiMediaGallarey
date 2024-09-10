@@ -23,3 +23,12 @@ extension UILabel {
     }
  
 }
+
+extension UILabel {
+    
+    func sizeText() -> CGSize {
+        guard let text = text else { return .zero }
+        return text.size(withAttributes: [.font : self.font!])
+    }
+ 
+}

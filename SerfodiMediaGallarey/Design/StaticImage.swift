@@ -17,4 +17,5 @@ enum StaticImage {
     static let closeIcon = UIImage(systemName: "xmark")
     static let sharedIcon = UIImage(systemName: "arrow.up")
     static let infoIcon = UIImage(systemName: "info")
+    static let ellipsis = UIImage(systemName: "ellipsis")
 }
