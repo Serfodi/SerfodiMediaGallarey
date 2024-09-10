@@ -13,11 +13,21 @@ class MediaViewCell: UICollectionViewCell {
     var media: MediaDisplayModel?
     
     let imageView = WebImageView()
-    let imageAvatar = WebImageView()
     let descriptionLabel = UILabel(title: "foo")
-    let nameLabel = UILabel(title: "foo")
-    let profileView = UIView()
-        
+    let profileView = ProfileView()
+    let likeLabel = UILabel(title: "boo", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.white)
+    let dataLabel = UILabel(title: "boo", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.white)
+    
+    lazy var baseLikeView: UIView = {
+        let effect = UIBlurEffect(style: .systemMaterialDark)
+        let vibrancyEffect = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: effect))
+        let effectView = UIVisualEffectView(effect: effect)
+        effectView.contentView.addSubview(likeLabel)
+        vibrancyEffect.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        likeLabel.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        return effectView
+    }()
+    
     // MARK: Init
     
     override init(frame: CGRect) {
@@ -32,7 +42,13 @@ class MediaViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
+     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.cancelDownload()
+        profileView.imageAvatar.cancelDownload()
+    }
+    
     // MARK: Helpers
     
     private func accessibility() {
@@ -40,14 +56,10 @@ class MediaViewCell: UICollectionViewCell {
         if let text = descriptionLabel.text, !text.isEmpty {
             description = "\("WriteDescription".localized()): \(text)"
         }
-        accessibilityLabel = [nameLabel.text, description].compactMap{$0}.joined(separator: ",")
-    }
-    
-    private func updateFrame() {
-        guard let size = media?.size else { return }
-        imageView.frame = size.imageViewFrame
-        descriptionLabel.frame = size.descriptionLabelFrame
-        profileView.frame = size.profileViewFrame
+        accessibilityLabel = [
+            profileView.nameLabel.text,
+            description
+        ].compactMap{$0}.joined(separator: ",")
     }
     
 }
@@ -58,17 +70,19 @@ extension MediaViewCell: SelfConfiguringCell {
         guard let media: MediaDisplayModel = value as? MediaDisplayModel else { return }
         self.media = media
         
-        // configuration content
-        descriptionLabel.text = media.description
-        nameLabel.text = media.name
-        if let url = URL(string: media.imageURL) {
-            imageView.set(url: url)
-        }
-        if let url = URL(string: media.imageAvatar) {
-            imageAvatar.set(url: url)
-        }
+        imageView.image = nil
+        profileView.imageAvatar.image = nil
         
-        updateFrame()
+        if let url = URL(string: media.imageURL) {
+            imageView.asyncSetImage(url: url)
+        }
+        descriptionLabel.text = media.description
+        profileView.set(user: media.user)
+        likeLabel.text = "👍 \(media.like)"
+        dataLabel.text = media.date.formateDate()
+        imageView.frame = media.size.imageViewFrame
+        descriptionLabel.frame = media.size.descriptionLabelFrame
+        profileView.frame = media.size.profileViewFrame
         accessibility()
     }
     
@@ -80,36 +94,24 @@ private extension MediaViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 10
-        imageAvatar.contentMode = .scaleAspectFill
-        imageAvatar.clipsToBounds = true
-        imageAvatar.layer.cornerRadius = StaticCellSize.profileImageHight / 2
         descriptionLabel.numberOfLines = 0
+        imageView.backgroundColor = ColorAppearance.lightGray
     }
     
     private func configurationFrame() {
-//        imageView.autoresizingMask = [.flexibleHeight, .flexibleWidth, .flexibleBottomMargin]
-//        descriptionLabel.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-//        profileView.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
         addSubview(imageView)
         addSubview(descriptionLabel)
         addSubview(profileView)
-        profileView.addSubview(imageAvatar)
-        profileView.addSubview(nameLabel)
-        layoutConfiguration()
-    }
-    
-    private func layoutConfiguration() {
-        imageAvatar.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        imageView.addSubview(likeLabel)
+        imageView.addSubview(dataLabel)
+        
+        likeLabel.translatesAutoresizingMaskIntoConstraints = false
+        dataLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            imageAvatar.widthAnchor.constraint(equalToConstant: StaticCellSize.profileImageHight),
-            imageAvatar.leadingAnchor.constraint(equalTo: profileView.leadingAnchor),
-            imageAvatar.centerYAnchor.constraint(equalTo: profileView.centerYAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: imageAvatar.trailingAnchor, constant: StaticCellSize.padding2),
-            nameLabel.centerYAnchor.constraint(equalTo: profileView.centerYAnchor),
-            nameLabel.trailingAnchor.constraint(equalTo: profileView.trailingAnchor)
+            likeLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -5),
+            likeLabel.leftAnchor.constraint(equalTo: imageView.leftAnchor, constant: 5),
+            dataLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -5),
+            dataLabel.rightAnchor.constraint(equalTo: imageView.rightAnchor, constant: -5)
         ])
     }
     

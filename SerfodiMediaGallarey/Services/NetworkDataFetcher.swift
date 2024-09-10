@@ -8,7 +8,8 @@
 import Foundation
 
 protocol DataFetcher {
-    func getPhoto(parameters:[String:String]) async throws -> [Photo]?
+    func getPhotos(parameters:[String:String]) async throws -> [Photo]?
+    func getPhotoInfo(id: String) async throws -> Photo?
 }
 
 class NetworkDataFetcher: DataFetcher {
@@ -21,6 +22,8 @@ class NetworkDataFetcher: DataFetcher {
     
     /// Photo Search request Get
     ///
+    /// - Invariant: endpoint `API.photosPath = /search/photos`
+    ///
     /// Parameters:
     ///  * query – Search terms
     ///  * page – Page number to retrieve. (Optional; default: 1)
@@ -28,10 +31,24 @@ class NetworkDataFetcher: DataFetcher {
     ///
     /// - seealso: Find more information for [Unsplash Developers](https://unsplash.com/documentation#search-photos)
     ///
-    func getPhoto(parameters: [String : String]) async throws -> [Photo]? {
+    func getPhotos(parameters: [String : String]) async throws -> [Photo]? {
         let data = try await networking.request(path: API.photosPath, params: parameters)
         let decoded = self.decoderJSON(type: ResponseWrapped<Photo>.self, from: data)
         return decoded?.results
+    }
+    
+    /// Get info photo witch `id`
+    ///
+    /// This method gives you more information about the Photo. \
+    /// For example: location, camera, tags.
+    ///
+    /// - Invariant: endpoint `API.photos = /photos`
+    /// - seealso: Find more information for [Unsplash Developers](https://unsplash.com/documentation#get-a-photo)
+    ///
+    func getPhotoInfo(id: String) async throws -> Photo? {
+        let data = try await networking.request(path: API.photos + id, params: [:])
+        let decoded = self.decoderJSON(type: Photo.self, from: data)
+        return decoded
     }
     
     private func decoderJSON<T: Decodable>(type: T.Type, from: Data?) -> T? {

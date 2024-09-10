@@ -51,7 +51,6 @@ final class SearchViewController: UISearchController {
     // MARK: Helpers
     
     private func isShow(_ show: Bool) {
-        searchBar.showsScopeBar = show
         showsSearchResultsController = show
     }
     

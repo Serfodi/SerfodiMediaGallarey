@@ -112,15 +112,17 @@ private extension CalculateCellSize {
         let profileViewFrame = CGRect(x: 0, y: height - StaticCellSize.profileImageHight, width: width, height: StaticCellSize.profileImageHight)
         
         // Label
-        var descriptionFrame = CGRect(origin: CGPoint(x: 0, y: height), size: .zero)
-        if let text = description, !text.isEmpty {
-            let height = text.height(width: width)
-            descriptionFrame.size = CGSize(width: width, height: height)
-            descriptionFrame.origin = CGPoint(x: 0, y: profileViewFrame.minY - height - StaticCellSize.padding2)
-        }
+        var descriptionFrame = CGRect.zero
+//        var descriptionFrame = CGRect(origin: CGPoint(x: 0, y: height), size: .zero)
+//        if let text = description, !text.isEmpty {
+//            let height = text.height(width: width)
+//            descriptionFrame.size = CGSize(width: width, height: height)
+//            descriptionFrame.origin = CGPoint(x: 0, y: profileViewFrame.minY - height - StaticCellSize.padding2)
+//        }
         
         // Photo
-        let imageHeight = min(descriptionFrame.minY, profileViewFrame.minY) - StaticCellSize.padding2
+//        let imageHeight = min(descriptionFrame.minY, profileViewFrame.minY) - StaticCellSize.padding2
+        let imageHeight = profileViewFrame.minY - StaticCellSize.padding2
         let photoSize = CGSize(width: width, height: imageHeight)
         let photoFrame = CGRect(origin: .zero, size: photoSize)
         

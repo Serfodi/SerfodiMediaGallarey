@@ -19,7 +19,7 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     private var collectionView: GalleryCollectionView
     let dataSource : MediaDataSource
     private let searchView: SearchViewController
-    
+        
     // MARK: Object lifecycle
     
     init() {
@@ -62,6 +62,14 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         super.viewDidLoad()
         collectionView.register(MediaViewCell.self)
         collectionView.delegate = dataSource
+        dataSource.registerFooter(collectionView.createRefreshControl())
+        dataSource.selected = { [weak self] in
+            self?.selectedCell($0)
+        }
+        dataSource.didEndCollection = { [weak self] in
+            self?.loadNew()
+        }
+        collectionView.setRefreshControl(self, action: #selector(refresh))
         // setup search bar
         searchView.searchDelegate = self
         navigationItem.title = "Search".localized()
@@ -69,12 +77,25 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
         
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
     // MARK: Action
-        
+    
+    @objc func refresh() {
+        interactor?.doSomething(request: .refreshPage)
+    }
+    
+    func loadNew() {
+        interactor?.doSomething(request: .loadPage)
+    }
+    
     @objc func changeGrid() {
         interactor?.doSomething(request: .changeGrid)
     }
@@ -91,15 +112,40 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         interactor?.doSomething(request: .sortedValue(.likes))
     }
     
+    func selectedCell(_ mediaId: String) {
+        interactor?.doSomething(request: .getPhoto(id: mediaId))
+    }
+    
     // MARK: Do something
         
     func displaySomething(viewModel: Gallery.Something.ViewModel) {
         switch viewModel {
-        case .displayMedia(items: let items, display: let display):
-            reloadData(with: items)
-            collectionView.displayLayout = display
+        case .displayMedia(media: let media):
+            reloadData(with: media)
+            
         case .displayError(let error):
             showAlert(with: "Error".localized(), and: error)
+            // stop all animation
+            if let stop = collectionView.stopLoading { stop() }
+            collectionView.refreshControl?.endRefreshing()
+            
+        case .displayNewMedia(media: let media):
+            reloadData(with: media)
+            if let stop = collectionView.stopLoading { stop() }
+            
+        case .displayFooterLoader:
+            if let start = collectionView.startLoading { start() }
+            
+        case .displayRefreshMedia(media: let media):
+            reloadData(with: media)
+            collectionView.refreshControl?.endRefreshing()
+            
+        case .displayNewGrid(media: let media, display: let display):
+            collectionView.displayLayout = display
+            reloadData(with: media)
+            
+        case .displaySelectedPhoto:
+            router?.routeToDetail()
         }
     }
     

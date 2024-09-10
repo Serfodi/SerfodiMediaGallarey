@@ -27,7 +27,9 @@ final class NetworkService: Networking {
         components.scheme = API.scheme
         components.host = API.host
         components.path = path
-        components.queryItems = params.map{ URLQueryItem(name: $0, value: $1) }
+        if !params.isEmpty {
+            components.queryItems = params.map{ URLQueryItem(name: $0, value: $1) }
+        }
         return components.url!
     }
     
