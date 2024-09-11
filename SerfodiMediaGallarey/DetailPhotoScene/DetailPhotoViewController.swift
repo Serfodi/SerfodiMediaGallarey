@@ -16,9 +16,6 @@ class DetailPhotoViewController: UIViewController, DetailPhotoDisplayLogic {
     var router: (NSObjectProtocol & DetailPhotoRoutingLogic & DetailPhotoDataPassing)?
     
     var scrollView: PhotoScrollView!
-    var closeButton = UIButton(configuration: .icons(StaticImage.closeIcon))
-    var infoButton = UIButton(configuration: .icons(StaticImage.infoIcon))
-    var sharedButton = UIButton(configuration: .icons(StaticImage.sharedIcon))
     
     override var prefersStatusBarHidden: Bool {
         true
@@ -59,7 +56,7 @@ class DetailPhotoViewController: UIViewController, DetailPhotoDisplayLogic {
         view.addSubview(scrollView)
         NSLayoutConstraint.activate(scrollView.layoutConstraints(in: view))
         interactor?.doSomething(request: .getImage)
-        configuration()
+        configurationView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,15 +67,24 @@ class DetailPhotoViewController: UIViewController, DetailPhotoDisplayLogic {
     // MARK: Do something
     
     func displaySomething(viewModel: DetailPhoto.Something.ViewModel) {
+        self.hideAll()
         switch viewModel {
         case .displayImage(image: let image):
             scrollView.set(image: image)
         case .displayError(let error):
-            showAlert(with: "Error".localized(), and: error)
+            showAlert(with: "Error".localized(), and: error) {
+                self.navigationController?.popViewController(animated: true)
+            }
         case .displayShared:
             router?.routeToShared()
         case .displayInfo:
             router?.routeToDetailInfo()
+        case .displayDownloadImage:
+            self.showMiniAlert(with: .done)
+        case .displayLoad:
+            self.showMiniAlert(with: .loader)
+        case .displayErrorDownload:
+            self.showMiniAlert(with: .error)
         }
     }
     
@@ -95,26 +101,45 @@ class DetailPhotoViewController: UIViewController, DetailPhotoDisplayLogic {
     @objc func sharedImage() {
         interactor?.doSomething(request: .sharedPhoto)
     }
+    
+    @objc func downloadImage() {
+        interactor?.doSomething(request: .downloadPhoto)
+    }
+    
 }
 
-extension DetailPhotoViewController {
+private extension DetailPhotoViewController {
     
-    func configuration() {
-        closeButton.addTarget(self, action: #selector(closePhoto), for: .touchUpInside)
-        infoButton.addTarget(self, action: #selector(openInfo), for: .touchUpInside)
-        sharedButton.addTarget(self, action: #selector(sharedImage), for: .touchUpInside)
-        view.addSubview(closeButton)
-        view.addSubview(infoButton)
-        view.addSubview(sharedButton)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        infoButton.translatesAutoresizingMaskIntoConstraints = false
-        sharedButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        closeButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
-        sharedButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        sharedButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10).isActive = true
-        infoButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
-        infoButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10).isActive = true
+    func configurationView() {
+        let closeView = button(image: StaticImage.closeIcon, action: #selector(closePhoto))
+        let infoView = button(image: StaticImage.infoIcon, action: #selector(openInfo))
+        let sharedView = button(image: StaticImage.sharedIcon, action: #selector(sharedImage))
+        let downloadView = button(image: StaticImage.downloadIcon, action: #selector(downloadImage))
+        
+        self.view.addSubview(closeView)
+        self.view.addSubview(infoView)
+        self.view.addSubview(sharedView)
+        self.view.addSubview(downloadView)
+        
+        closeView.topToSuperview(value: 10, usingSafeArea: true)
+        closeView.trailingToSuperview(value: 10, usingSafeArea: true)
+        sharedView.topToSuperview(value: 10,  usingSafeArea: true)
+        sharedView.leadingToSuperview(value: 10, usingSafeArea: true)
+        infoView.bottomToSuperview(value: 10, usingSafeArea: true)
+        infoView.trailingToSuperview(value: 10, usingSafeArea: true)
+        downloadView.bottomToSuperview(value: 10, usingSafeArea: true)
+        downloadView.leadingToSuperview(value: 10, usingSafeArea: true)
+    }
+    
+    func button(image: UIImage?, action: Selector) -> UIView {
+        let button = UIButton(type: .system)
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: action, for: .touchUpInside)
+        let height = StaticImage.SizeIcon.height()
+        let view = UIView.blurConfiguration(addView: button, height: height)
+        view.height(height)
+        view.aspectRatio(1)
+        return view
     }
     
 }

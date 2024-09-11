@@ -55,7 +55,7 @@ final class CalculateCellSize: FeedCellLayoutCalculatorProtocol {
     ///
     /// Using for collection View when `row != 1`
     func cellStaticHeight() -> CGFloat {
-        UIScreen.main.bounds.height * 0.4
+        UIScreen.main.bounds.width * 0.7
     }
     
     
@@ -112,7 +112,7 @@ private extension CalculateCellSize {
         let profileViewFrame = CGRect(x: 0, y: height - StaticCellSize.profileImageHight, width: width, height: StaticCellSize.profileImageHight)
         
         // Label
-        var descriptionFrame = CGRect.zero
+        let descriptionFrame = CGRect.zero
 //        var descriptionFrame = CGRect(origin: CGPoint(x: 0, y: height), size: .zero)
 //        if let text = description, !text.isEmpty {
 //            let height = text.height(width: width)

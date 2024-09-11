@@ -15,14 +15,3 @@ extension UIButton {
     }
     
 }
-
-extension UIButton.Configuration {
-    
-    static func icons(_ image: UIImage?) -> Self {
-        var configuration = UIButton.Configuration.filled()
-        configuration.image = image
-        configuration.cornerStyle = .capsule
-        return configuration
-    }
-    
-}

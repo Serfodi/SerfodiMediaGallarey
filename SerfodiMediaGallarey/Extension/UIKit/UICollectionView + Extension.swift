@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol SelfConfiguringCell : UICollectionViewCell {
+    func configure<U: Hashable>(with value: U)
+}
+
+
 extension UICollectionViewCell {
         
     static var reuseIdentifier: String {
@@ -17,6 +22,7 @@ extension UICollectionViewCell {
         type(of: self).reuseIdentifier
     }
 }
+
 
 extension UICollectionView {
     
@@ -29,5 +35,5 @@ extension UICollectionView {
         cell.configure(with: value)
         return cell
     }
-    
 }
+

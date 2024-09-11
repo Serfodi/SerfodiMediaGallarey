@@ -38,12 +38,6 @@ class GalleryInteractorTests: XCTestCase {
         var error: Error? = nil
         
         func presentSomething(response: Gallery.Something.Response) {
-            switch response {
-            case .presentMediaItems(media: let media):
-                self.media = media
-            case .responseError(let error):
-                self.error = error
-            }
         }
     }
     

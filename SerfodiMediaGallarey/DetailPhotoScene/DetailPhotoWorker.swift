@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 class DetailPhotoWorker {
     
@@ -21,4 +22,10 @@ class DetailPhotoWorker {
         try await fetcher.getPhotoInfo(id: id)
     }
     
+    func downloadImage(_ image: UIImage) async throws {
+        try await PHPhotoLibrary.shared().performChanges {
+            let request = PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }
+    }
+        
 }

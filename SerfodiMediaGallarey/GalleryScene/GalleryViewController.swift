@@ -17,7 +17,7 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     var router: (NSObjectProtocol & GalleryRoutingLogic & GalleryDataPassing)?
     
     private var collectionView: GalleryCollectionView
-    let dataSource : MediaDataSource
+    private let dataSource : MediaDataSource
     private let searchView: SearchViewController
         
     // MARK: Object lifecycle
@@ -75,6 +75,7 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
         navigationItem.title = "Search".localized()
         navigationItem.searchController = searchView
         navigationItem.hidesSearchBarWhenScrolling = false
+        self.showFirst()
     }
         
     override func viewWillAppear(_ animated: Bool) {
@@ -119,17 +120,21 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
     // MARK: Do something
         
     func displaySomething(viewModel: Gallery.Something.ViewModel) {
+        self.hideAll()
+        
         switch viewModel {
         case .displayMedia(media: let media):
+            if media.isEmpty { self.showSearch() }
             reloadData(with: media)
             
-        case .displayError(let error):
+        case .displayErrorAlert(let error):
             showAlert(with: "Error".localized(), and: error)
-            // stop all animation
+            
             if let stop = collectionView.stopLoading { stop() }
             collectionView.refreshControl?.endRefreshing()
             
         case .displayNewMedia(media: let media):
+            if media.isEmpty { self.showSearch() }
             reloadData(with: media)
             if let stop = collectionView.stopLoading { stop() }
             
@@ -137,15 +142,24 @@ class GalleryViewController: UIViewController, GalleryDisplayLogic {
             if let start = collectionView.startLoading { start() }
             
         case .displayRefreshMedia(media: let media):
+            if media.isEmpty { self.showSearch() }
             reloadData(with: media)
             collectionView.refreshControl?.endRefreshing()
             
         case .displayNewGrid(media: let media, display: let display):
+            if media.isEmpty { self.showSearch() }
             collectionView.displayLayout = display
             reloadData(with: media)
             
         case .displaySelectedPhoto:
             router?.routeToDetail()
+            
+        case .displayLoader:
+            self.showLoading()
+        case .displayError(let error):
+            self.showError(text: error) {
+                self.interactor?.doSomething(request: .refreshPage)
+            }
         }
     }
     

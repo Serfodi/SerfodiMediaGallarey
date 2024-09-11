@@ -40,6 +40,17 @@
         }
       }
     },
+    "Close image" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрыть фото"
+          }
+        }
+      }
+    },
     "Color" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -47,6 +58,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Цвет"
+          }
+        }
+      }
+    },
+    "Data is nil" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет данных"
           }
         }
       }
@@ -64,6 +86,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "По дате"
+          }
+        }
+      }
+    },
+    "Download" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загрузка"
           }
         }
       }
@@ -96,6 +129,17 @@
         }
       }
     },
+    "Information" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Информация"
+          }
+        }
+      }
+    },
     "Key" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -103,6 +147,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ключ"
+          }
+        }
+      }
+    },
+    "Look for photos and get inspired" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Смотрите фото и вдохновляйтесь"
           }
         }
       }
@@ -142,6 +197,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сортировать"
+          }
+        }
+      }
+    },
+    "Please try again" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пожалуйста, попробуйте снова"
           }
         }
       }
@@ -202,6 +268,17 @@
         }
       }
     },
+    "Size" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Размер"
+          }
+        }
+      }
+    },
     "Sorted" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -230,6 +307,17 @@
         }
       }
     },
+    "Start the search" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начните поиск"
+          }
+        }
+      }
+    },
     "Teal" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -237,6 +325,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Бирюзовый"
+          }
+        }
+      }
+    },
+    "Today" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня"
           }
         }
       }
@@ -282,6 +381,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Желтый"
+          }
+        }
+      }
+    },
+    "Уesterday" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вчера"
           }
         }
       }

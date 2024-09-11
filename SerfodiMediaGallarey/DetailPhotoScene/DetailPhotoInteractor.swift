@@ -29,7 +29,7 @@ class DetailPhotoInteractor: DetailPhotoBusinessLogic, DetailPhotoDataStore {
         if worker === nil { worker = DetailPhotoWorker() }
         switch request {
         case .getImage:
-            
+            presenter?.presentSomething(response: .responseLoad)
             Task {
                 do {
                     let image = try await worker.loadImage(urlString: photo.urls.regular)
@@ -53,14 +53,29 @@ class DetailPhotoInteractor: DetailPhotoBusinessLogic, DetailPhotoDataStore {
             }
             
         case .sharedPhoto:
-            
+//            presenter?.presentSomething(response: .responseLoad)
             Task {
                 do {
-                    let image = try await worker.loadImage(urlString: photo.urls.full)
-                    self.fullImage = image
+                    if self.fullImage == nil {
+                        self.fullImage = try await worker.loadImage(urlString: photo.urls.full)
+                    }
                     presenter?.presentSomething(response: .responseFullPhoto)
                 } catch {
                     presenter?.presentSomething(response: .responseError(error))
+                }
+            }
+            
+        case .downloadPhoto:
+//            presenter?.presentSomething(response: .responseLoad)
+            Task {
+                do {
+                    if self.fullImage == nil {
+                        self.fullImage = try await worker.loadImage(urlString: photo.urls.full)
+                    }
+                    try await worker.downloadImage(self.fullImage!)
+                    presenter?.presentSomething(response: .responseDownloadImage)
+                } catch {
+                    presenter?.presentSomething(response: .responseErrorDownload)
                 }
             }
             

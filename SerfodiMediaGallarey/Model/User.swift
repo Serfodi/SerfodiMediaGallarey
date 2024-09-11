@@ -10,11 +10,11 @@ import UIKit
 struct User: Decodable {
     
     struct ProfileImageSize: Decodable {
-        let small: String?
+        let small: String
     }
     
     struct Links: Decodable {
-        let html: String?
+        let html: String
     }
     
     let id: String
