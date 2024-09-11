@@ -34,6 +34,18 @@ class DetailPhotoPresenter: DetailPhotoPresentationLogic {
             Task {
                 await viewController?.displaySomething(viewModel: .displayShared)
             }
+        case .responseDownloadImage:
+            Task {
+                await viewController?.displaySomething(viewModel: .displayDownloadImage)
+            }
+        case .responseLoad:
+            Task {
+                await viewController?.displaySomething(viewModel: .displayLoad)
+            }
+        case .responseErrorDownload:
+            Task {
+                await viewController?.displaySomething(viewModel: .displayErrorDownload)
+            }
         }
     }
 }

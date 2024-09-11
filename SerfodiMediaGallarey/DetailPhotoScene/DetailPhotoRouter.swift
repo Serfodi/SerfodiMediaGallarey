@@ -38,7 +38,7 @@ class DetailPhotoRouter: NSObject, DetailPhotoRoutingLogic, DetailPhotoDataPassi
     func navigateToDetailInfo(source: DetailPhotoViewController, destination: UIViewController) {
         destination.modalPresentationStyle = .pageSheet
         let sheet = destination.sheetPresentationController
-        sheet?.detents = [.medium()]
+        sheet?.detents = [.medium(), .large()]
         source.present(destination, animated: true)
     }
     
