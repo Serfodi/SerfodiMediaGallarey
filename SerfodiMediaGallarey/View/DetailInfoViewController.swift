@@ -8,20 +8,16 @@
 import UIKit
 
 class DetailInfoViewController: UIViewController {
-
+    
     let titleLabel = UILabel(title: "Information".localized(), fount: FontAppearance.title, alignment: .center)
-    let descriptionLabel = UILabel(title: "foo")
-    // дата
-    let titleDateLabel = UILabel(title: "foo")
-    // Кол-во просмотров
+    let descriptionLabel = UILabel(title: nil)
+    let titleDateLabel = UILabel(title: "foo", fount: FontAppearance.mini, color: ColorAppearance.darkGray)
     let likedLabel = UILabel(title: "foo")
-    let locationLabel = UILabel(title: "foo")
-    
+    let locationLabel = UILabel(title: nil)
     let profileView = ProfileView()
+    lazy var exifView = MetaInfoPhotoView(photo: photo)
     
-    var exifView: MetaInfoPhotoView!
-    
-    let dateFormatter: DateFormatter = {
+    private let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "d MMM yyyy. HH:mm:ss"
         return dateFormatter
@@ -33,54 +29,51 @@ class DetailInfoViewController: UIViewController {
         self.photo = photo
         super.init(nibName: nil, bundle: nil)
         
-        exifView = MetaInfoPhotoView(photo: photo)
-        
         profileView.set(user: photo.user)
+        likedLabel.text = "👍 \(photo.likes)"
         
         descriptionLabel.text = photo.description
+        
         titleDateLabel.text = dateFormatter.string(from: photo.createdAt ?? Date())
         
-        if let location = photo.location {
-            locationLabel.text = [location.country, location.city].compactMap { $0 }.joined(separator: ",")
+        if let location = photo.location, let country = location.country, let city = location.city {
+            locationLabel.text = "📍 \(country) • \(city)"
         }
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configuration()
         view.backgroundColor = ColorAppearance.white
+        configuration()
+        configurationLayout()
     }
     
     func configuration() {
-        view.addSubview(titleLabel)
-        view.addSubview(descriptionLabel)
-        view.addSubview(exifView)
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        exifView.translatesAutoresizingMaskIntoConstraints = false
-        
-        titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        titleLabel.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor).isActive = true
-        titleLabel.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor).isActive = true
-        
         descriptionLabel.numberOfLines = 0
-        
-        var verticalStack = UIStackView(
-            arrangedSubviews: [descriptionLabel, exifView, titleDateLabel, locationLabel, profileView],
-            axis: .vertical, spacing: 20)
-        
-        view.addSubview(verticalStack)
-        verticalStack.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            verticalStack.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            verticalStack.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 20),
-            verticalStack.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -20),
-        ])
+        self.sheetPresentationController?.prefersGrabberVisible = photo.description != nil
+        if photo.description == nil {
+            self.sheetPresentationController?.detents = [.medium()]
+        }
     }
+    
+    func configurationLayout() {
+        let stackDataAndLike = UIStackView(arrangedSubviews: [titleDateLabel, likedLabel], axis: .horizontal, spacing: 0)
+        
+        descriptionLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
+        descriptionLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        
+        let verticalStack = UIStackView(
+            arrangedSubviews: [titleLabel, descriptionLabel, UIView(), exifView, stackDataAndLike, locationLabel, profileView],
+            axis: .vertical, spacing: 10)
+        self.view.addSubview(verticalStack)
+        verticalStack.topToSuperview(value: 20)
+        verticalStack.trailingToSuperview(value: 10)
+        verticalStack.leadingToSuperview(value: 10)
+        verticalStack.bottomToSuperview(value: 10, usingSafeArea: true)
+    }
+    
 }

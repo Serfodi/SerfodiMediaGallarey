@@ -10,74 +10,77 @@ import UIKit
 
 class MetaInfoPhotoView: UIView {
     
+    let nameLabel =  UILabel(title: "-")
+    let infoLabel = UILabel(title: nil, fount: FontAppearance.mini, color: ColorAppearance.darkGray)
+    let apertureLabel = UILabel(title: "-", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.darkGray)
+    let exposureTimeLabel = UILabel(title: "-", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.darkGray)
+    let focalLengthLabel = UILabel(title:  "-", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.darkGray)
+    
+    private lazy var headerView = UIView(addView: nameLabel, value: 10, color: ColorAppearance.darkGray)
+    private lazy var bodyView = UIView(addView: infoLabel, value: 10, color: ColorAppearance.lightGray)
+    private lazy var footerView = UIView(addView: footerStack, value: 10)
+    
+    private lazy var footerStack: UIStackView = {
+        let views = [apertureLabel, exposureTimeLabel, focalLengthLabel]
+        let stack = UIStackView(arrangedSubviews: views, axis: .horizontal, spacing: 0)
+        stack.distribution = .fillEqually
+        return stack
+    }()
+    
+    
+    
     init(photo: Photo) {
         super.init(frame: .zero)
         
-        let header = nameLabel(photo: photo)
-        let d = infoLabel(photo: photo)
-        let f = configurationSegment(exif: photo.exif!)
+        nameLabel.text = photo.exif?.model
+        var infoText = "\("Size".localized()): \(photo.width) ✕ \(photo.height)"
+        if let name = photo.exif?.name {
+            infoText += "\n\(name)"
+        }
+        infoLabel.text = infoText
+        if let aperture = photo.exif?.aperture {
+            apertureLabel.text = "⨍ " + aperture
+        }
+        if let exposure = photo.exif?.exposureTime {
+            exposureTimeLabel.text = exposure + " s"
+        }
+        if let focalLength = photo.exif?.focalLength {
+            focalLengthLabel.text = focalLength + " mm"
+        }
+        configurationView()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
-        let segmetn = UIStackView(arrangedSubviews: [
-            header,
-            d,
-            f
-        ], axis: .vertical, spacing: 0)
+        let pathShadows = UIBezierPath(rect: CGRect(origin: .zero, size: CGSize(width: self.bounds.width, height: 0.5)))
+        footerView.addShadow(color: ColorAppearance.darkGray, path: pathShadows)
         
-        self.backgroundColor = ColorAppearance.lightGray
-        self.layer.cornerRadius = 10
-        self.clipsToBounds = true
+        footerStack.arrangedSubviews.dropFirst().forEach {
+            let size = CGSize(width: 0.5, height: FontAppearance.mini.lineHeight)
+            let path = UIBezierPath(rect: CGRect(origin: CGPoint(x: $0.frame.maxX, y: $0.frame.minY), size: size) )
+            $0.addShadow(color: ColorAppearance.darkGray, path: path)
+        }
         
-        self.addSubview(segmetn)
-        segmetn.toSuperView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
 }
 
 private extension MetaInfoPhotoView {
         
-    
-    func configurationSegment(exif: Exif) -> UIView {
-        let apertureLabel = UILabel(title: "⨍ " + (exif.aperture ?? ""), fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.darkGray)
-        let exposureTimeLabel = UILabel(title: (exif.exposureTime ?? "-") + " s", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.darkGray)
-        let focalLengthLabel = UILabel(title:  (exif.focalLength ?? "-") + " mm", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.darkGray)
-        let segment = UIStackView(arrangedSubviews: [
-            apertureLabel, exposureTimeLabel, focalLengthLabel
-        ], axis: .horizontal, spacing: 0)
-        segment.distribution = .fillEqually
-        
-        let view = UIView()
-        view.layer.borderWidth = 0.8
-        view.layer.borderColor = ColorAppearance.gray.cgColor
-        
-        view.addSubview(segment)
-        segment.toSuperView(value: 10)
-        
-        return view
+    func configurationView() {
+        self.backgroundColor = ColorAppearance.lightGray
+        self.layer.cornerRadius = 10
+        self.clipsToBounds = true
+        infoLabel.numberOfLines = 2
+        let stack = UIStackView(arrangedSubviews: [headerView, bodyView, footerView], axis: .vertical, spacing: 0)
+        addSubview(stack)
+        stack.edgesToSuperView()
     }
     
-    func infoLabel(photo: Photo) -> UIView {
-        let view = UIView()
-        let text = "\("Size".localized()): \(photo.width) ✕ \(photo.height) • \(photo.exif?.model ?? photo.exif?.name ?? "-")"
-        let label = UILabel(title: text, fount: FontAppearance.mini, color: ColorAppearance.darkGray)
-        view.addSubview(label)
-        label.toSuperView(value: 10)
-        return view
-    }
-    
-    func nameLabel(photo: Photo) -> UIView {
-        let view = UIView()
-        view.backgroundColor = ColorAppearance.darkGray
-        let label = UILabel(title: photo.exif?.name ?? "-", fount: FontAppearance.body, color: ColorAppearance.black)
-        view.addSubview(label)
-        view.layer.borderWidth = 0.8
-        view.layer.borderColor = ColorAppearance.gray.cgColor
-        label.toSuperView(value: 10)
-        return view
-    }
     
 }

@@ -24,12 +24,10 @@ class ProfileView: UIView {
     }
     
     public func set(user: User) {
-        if let url = URL(string: user.profileImage.small ?? "") {
+        if let url = URL(string: user.profileImage.small) {
             imageAvatar.asyncSetImage(url: url)
         }
         nameLabel.text = user.username
-        
-        let ref = [user.instagramUsername, user.twitterUsername, user.links?.html].compactMap{ $0 }
         
         var action = [UIAction]()
         if let insta = user.instagramUsername {
@@ -68,26 +66,21 @@ class ProfileView: UIView {
         addSubview(nameLabel)
         addSubview(button)
         
-        imageAvatar.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        button.translatesAutoresizingMaskIntoConstraints = false
+        imageAvatar.height(StaticCellSize.profileImageHight)
+        imageAvatar.aspectRatio(1)
+        imageAvatar.topToSuperview()
+        imageAvatar.bottomToSuperview()
+        imageAvatar.leadingToSuperview()
         
-        NSLayoutConstraint.activate([
-            imageAvatar.topAnchor.constraint(equalTo: topAnchor),
-            imageAvatar.bottomAnchor.constraint(equalTo: bottomAnchor),
-            imageAvatar.leadingAnchor.constraint(equalTo: leadingAnchor),
-            imageAvatar.widthAnchor.constraint(equalToConstant: StaticCellSize.profileImageHight)
-        ])
-        NSLayoutConstraint.activate([
-            nameLabel.leadingAnchor.constraint(equalTo: imageAvatar.trailingAnchor, constant: StaticCellSize.padding2),
-            nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            nameLabel.trailingAnchor.constraint(equalTo: button.leadingAnchor)
-        ])
-        NSLayoutConstraint.activate([
-            button.centerYAnchor.constraint(equalTo: centerYAnchor),
-            button.trailingAnchor.constraint(equalTo: trailingAnchor)
-        ])
+        nameLabel.leadingToTrailing(of: imageAvatar, value: 5)
+        nameLabel.trailingToLeading(of: button, value: 5)
+        nameLabel.centerYToSuperview()
         
+        button.trailingToSuperview()
+        button.centerYToSuperview()
+        button.topToSuperview()
+        button.bottomToSuperview()
+        button.aspectRatio(1)
     }
     
 }
