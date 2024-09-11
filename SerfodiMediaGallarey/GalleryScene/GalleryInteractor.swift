@@ -49,13 +49,14 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
         
         switch request {
         case .search(parameters: let parameters):
+            self.presenter?.presentSomething(response: .presentLoader)
             Task(priority: .userInitiated) {
                 do {
                     let photos = try await worker.getPhotos(parameters: parameters)
                     await photoRepository.setPhotos(photos)
                     self.presenter?.presentSomething(response: .presentPhotos(photos: await photoRepository.get()))
                 } catch {
-                    self.presenter?.presentSomething(response: .presentError(error))
+                    self.presentError(error: error, await photoRepository.get().isEmpty)
                 }
             }
         case .refreshPage:
@@ -65,7 +66,7 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
                     await photoRepository.setPhotos(photos)
                     self.presenter?.presentSomething(response: .presentRefreshPhotos(photos: photos))
                 } catch {
-                    self.presenter?.presentSomething(response: .presentError(error))
+                    self.presentError(error: error, await photoRepository.get().isEmpty)
                 }
             }
         case .loadPage:
@@ -77,7 +78,7 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
                     let photos = await photoRepository.get()
                     self.presenter?.presentSomething(response: .presentNewPhotos(photos: photos))
                 } catch {
-                    self.presenter?.presentSomething(response: .presentError(error))
+                    self.presentError(error: error, await photoRepository.get().isEmpty)
                 }
             }
         case .changeGrid:
@@ -102,4 +103,15 @@ class GalleryInteractor: GalleryBusinessLogic, GalleryDataStore {
             }
         }
     }
+    
+    // MARK: Helpers
+    
+    func presentError(error: Error, _ isEmpty: Bool) {
+        if isEmpty {
+            self.presenter?.presentSomething(response: .presentError(error))
+        } else {
+            self.presenter?.presentSomething(response: .presentErrorAlert(error))
+        }
+    }
+    
 }

@@ -30,6 +30,7 @@ enum Gallery {
         enum Response {
             case presentPhotos(photos:[Photo])
             case presentError(Error)
+            case presentErrorAlert(Error)
             /// Загрузить новые фото
             case presentFooterLoader
             case presentNewPhotos(photos:[Photo])
@@ -43,10 +44,13 @@ enum Gallery {
             case presentSortedValue(photos:[Photo], sortedValue: MediaCellModel.ValueSort)
             /// Дать модель фото для передачи по нажатию на ячейку
             case presentSelectedPhoto
+            
+            case presentLoader
         }
         enum ViewModel {
             case displayMedia(media: [MediaCellModel])
             case displayError(String)
+            case displayErrorAlert(String)
             /// Показать новые фото
             case displayNewMedia(media:[MediaCellModel])
             case displayFooterLoader
@@ -56,6 +60,8 @@ enum Gallery {
             case displayNewGrid(media:[MediaCellModel], display: GalleryCollectionView.DisplayLayout)
             /// Показать фото
             case displaySelectedPhoto
+            
+            case displayLoader
         }
     }
 }

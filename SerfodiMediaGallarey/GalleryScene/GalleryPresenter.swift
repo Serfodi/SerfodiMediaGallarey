@@ -33,9 +33,9 @@ class GalleryPresenter: GalleryPresentationLogic {
                 await viewController?.displaySomething(viewModel: .displayMedia(media: items))
             }
             
-        case .presentError(let error):
+        case .presentErrorAlert(let error):
             Task {
-                await viewController?.displaySomething(viewModel: .displayError(error.localizedDescription))
+                await viewController?.displaySomething(viewModel: .displayErrorAlert(error.localizedDescription))
             }
             
         case .presentNewPhotos(photos: let photos):
@@ -81,6 +81,15 @@ class GalleryPresenter: GalleryPresentationLogic {
             Task {
                 await viewController?.displaySomething(viewModel: .displaySelectedPhoto)
             }
+        case .presentError(let error):
+            Task {
+                await viewController?.displaySomething(viewModel: .displayError(error.localizedDescription))
+            }
+            
+        case .presentLoader:
+            Task {
+                await viewController?.displaySomething(viewModel: .displayLoader)
+            }
         }
     }
     
@@ -96,7 +105,7 @@ class GalleryPresenter: GalleryPresentationLogic {
     func convert(from photo: Photo) -> MediaCellModel {
         let size = calculate.sizes(description: photo.description, photo: PhotoCellModel(width: photo.width, height: photo.height))
         
-        let photoUrlString: String = self.display == .two ? photo.urls.thumb ?? "" : photo.urls.small ?? ""
+        let photoUrlString: String = photo.urls.small
         
         return MediaCellModel(id: photo.id,
                               imageURL: photoUrlString,
@@ -118,6 +127,4 @@ class GalleryPresenter: GalleryPresentationLogic {
             }
         }
     }
-    
 }
-
