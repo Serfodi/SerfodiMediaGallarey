@@ -13,20 +13,10 @@ class MediaViewCell: UICollectionViewCell {
     var media: MediaDisplayModel?
     
     let imageView = WebImageView()
-    let descriptionLabel = UILabel(title: "foo")
+    let descriptionLabel = UILabel(title: nil)
     let profileView = ProfileView()
-    let likeLabel = UILabel(title: "boo", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.white)
-    let dataLabel = UILabel(title: "boo", fount: FontAppearance.mini, alignment: .center, color: ColorAppearance.white)
-    
-    lazy var baseLikeView: UIView = {
-        let effect = UIBlurEffect(style: .systemMaterialDark)
-        let vibrancyEffect = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: effect))
-        let effectView = UIVisualEffectView(effect: effect)
-        effectView.contentView.addSubview(likeLabel)
-        vibrancyEffect.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        likeLabel.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        return effectView
-    }()
+    let likeLabel = UILabel(title: "boo", fount: FontAppearance.mini, alignment: .center)
+    let dataLabel = UILabel(title: "boo", fount: FontAppearance.mini, alignment: .center)
     
     // MARK: Init
     
@@ -93,26 +83,26 @@ private extension MediaViewCell {
     func configuration() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 10
+        imageView.layer.cornerRadius = 13
         descriptionLabel.numberOfLines = 0
         imageView.backgroundColor = ColorAppearance.lightGray
     }
     
     private func configurationFrame() {
-        addSubview(imageView)
         addSubview(descriptionLabel)
+        addSubview(imageView)
         addSubview(profileView)
-        imageView.addSubview(likeLabel)
-        imageView.addSubview(dataLabel)
         
-        likeLabel.translatesAutoresizingMaskIntoConstraints = false
-        dataLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            likeLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -5),
-            likeLabel.leftAnchor.constraint(equalTo: imageView.leftAnchor, constant: 5),
-            dataLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -5),
-            dataLabel.rightAnchor.constraint(equalTo: imageView.rightAnchor, constant: -5)
-        ])
+        let likeLabelView = UIView.blurConfiguration(addView: likeLabel, height: likeLabel.font.lineHeight, padding: 3)
+        let dataLabelView =  UIView.blurConfiguration(addView: dataLabel, height: dataLabel.font.lineHeight, padding: 3)
+        
+        imageView.addSubview(likeLabelView)
+        imageView.addSubview(dataLabelView)
+        
+        likeLabelView.bottomToSuperview(value: 2)
+        likeLabelView.leadingToSuperview(value: 2)
+        dataLabelView.bottomToSuperview(value: 2)
+        dataLabelView.trailingToSuperview(value: 2)
     }
     
 }
